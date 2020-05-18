@@ -1,0 +1,29 @@
+trainingInput:
+  scaleTier: STANDARD_1
+  hyperparameters:
+    hyperparameterMetricTag: auc
+    goal: MAXIMIZE
+    maxTrials: 20
+    maxParallelTrials: 5
+    enableTrialEarlyStopping: True
+    params:
+    - parameterName: batch_size
+      type: INTEGER
+      minValue: 8
+      maxValue: 512
+      scaleType: UNIT_LOG_SCALE
+    - parameterName: n_trees
+      type: INTEGER
+      minValue: 20
+      maxValue: 80
+      scaleType: UNIT_LINEAR_SCALE
+    - parameterName: l1_regularization
+      type: DOUBLE
+      minValue: 0.001
+      maxValue: 0.1
+      scaleType: UNIT_LOG_SCALE
+    - parameterName: l2_regularization
+      type: DOUBLE
+      minValue: 0.001
+      maxValue: 0.1
+      scaleType: UNIT_LOG_SCALE
