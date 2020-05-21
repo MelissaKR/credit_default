@@ -46,7 +46,7 @@ if __name__ == '__main__':
         '--train_examples',
         help = 'Number of examples (in thousands) to run the training job over. This determines the number of epochs.',
         type = int,
-        default = 300
+        default = 30000
     )    
     parser.add_argument(
         '--n_batches_per_layer',
@@ -73,11 +73,6 @@ if __name__ == '__main__':
         default = 0.01
     )
     parser.add_argument(
-        '--pattern',
-        help = 'Specify a pattern that has to be in input files.',
-        default = 'of'
-    )
-    parser.add_argument(
         '--eval_steps',
         help = 'Positive number of steps for which to evaluate model. Default is None, meaning evaluate until input_fn raises an end-of-input exception',
         type = int,       
@@ -92,7 +87,6 @@ if __name__ == '__main__':
     ### unused args 
     hparams.pop('job_dir', None)
     model.BUCKET  = hparams.pop('bucket')
-    model.PATTERN = hparams.pop('pattern')
     
     ### In the case of hyperparameter tuning, adds trial_id to the output path:
     output_dir = os.path.join(output_dir,

@@ -417,7 +417,7 @@ node {
       list {
         shape {
           dim {
-            size: 1
+            size: 2
           }
         }
       }
@@ -436,10 +436,11 @@ node {
         dtype: DT_STRING
         tensor_shape {
           dim {
-            size: 1
+            size: 2
           }
         }
         string_val: "gs://credit_card_default/credit_default/preproc/train.csv-00000-of-00002"
+        string_val: "gs://credit_card_default/credit_default/preproc/train.csv-00001-of-00002"
       }
     }
   }
@@ -505,7 +506,7 @@ node {
       list {
         shape {
           dim {
-            size: 1
+            size: 2
           }
         }
       }
@@ -1336,7 +1337,7 @@ node {
     key: "dataset_factory"
     value {
       func {
-        name: "_make_dataset_JvdGUVPOjA8"
+        name: "_make_dataset_zc0X1Dh0vfA"
       }
     }
   }
@@ -3332,7 +3333,7 @@ node {
   attr {
     key: "shared_name"
     value {
-      s: "hash_table_c9b32ab9-4db9-4336-b80a-45c38a43490b"
+      s: "hash_table_624e3a62-5312-49ee-bfa7-8e2181fd3c10"
     }
   }
   attr {
@@ -5012,7 +5013,7 @@ node {
   attr {
     key: "shared_name"
     value {
-      s: "hash_table_59d550b7-d3c3-46ec-8136-df1c5b0d12ac"
+      s: "hash_table_3d89355f-a799-47dc-be32-33bd48d7eff3"
     }
   }
   attr {
@@ -17726,7 +17727,7 @@ node {
         dtype: DT_STRING
         tensor_shape {
         }
-        string_val: "_temp_ca14189d911341649d8a9ebd276697b5/part"
+        string_val: "_temp_ca2596935466446cb36beb77788e0342/part"
       }
     }
   }
@@ -18524,6 +18525,1178 @@ node {
   input: "^save/restore_shard"
 }
 library {
+  function {
+    signature {
+      name: "_make_dataset_zc0X1Dh0vfA"
+      output_arg {
+        name: "modeldataset"
+        type: DT_VARIANT
+      }
+      description: "Factory function for a dataset."
+      is_stateful: true
+    }
+    node_def {
+      name: "optimizations"
+      op: "Const"
+      device: "/device:CPU:0"
+      attr {
+        key: "dtype"
+        value {
+          type: DT_STRING
+        }
+      }
+      attr {
+        key: "value"
+        value {
+          tensor {
+            dtype: DT_STRING
+            tensor_shape {
+              dim {
+                size: 3
+              }
+            }
+            string_val: "map_and_batch_fusion"
+            string_val: "noop_elimination"
+            string_val: "shuffle_and_repeat_fusion"
+          }
+        }
+      }
+    }
+    node_def {
+      name: "OptimizeDataset/Const"
+      op: "Const"
+      device: "/device:CPU:0"
+      attr {
+        key: "dtype"
+        value {
+          type: DT_STRING
+        }
+      }
+      attr {
+        key: "value"
+        value {
+          tensor {
+            dtype: DT_STRING
+            tensor_shape {
+              dim {
+                size: 2
+              }
+            }
+            string_val: "gs://credit_card_default/credit_default/preproc/train.csv-00000-of-00002"
+            string_val: "gs://credit_card_default/credit_default/preproc/train.csv-00001-of-00002"
+          }
+        }
+      }
+    }
+    node_def {
+      name: "OptimizeDataset/flat_filenames/shape"
+      op: "Const"
+      device: "/device:CPU:0"
+      attr {
+        key: "dtype"
+        value {
+          type: DT_INT32
+        }
+      }
+      attr {
+        key: "value"
+        value {
+          tensor {
+            dtype: DT_INT32
+            tensor_shape {
+              dim {
+                size: 1
+              }
+            }
+            int_val: -1
+          }
+        }
+      }
+    }
+    node_def {
+      name: "OptimizeDataset/flat_filenames"
+      op: "Reshape"
+      input: "OptimizeDataset/Const:output:0"
+      input: "OptimizeDataset/flat_filenames/shape:output:0"
+      device: "/device:CPU:0"
+      attr {
+        key: "T"
+        value {
+          type: DT_STRING
+        }
+      }
+      attr {
+        key: "Tshape"
+        value {
+          type: DT_INT32
+        }
+      }
+    }
+    node_def {
+      name: "OptimizeDataset/TensorSliceDataset"
+      op: "TensorSliceDataset"
+      input: "OptimizeDataset/flat_filenames:output:0"
+      device: "/device:CPU:0"
+      attr {
+        key: "Toutput_types"
+        value {
+          list {
+            type: DT_STRING
+          }
+        }
+      }
+      attr {
+        key: "output_shapes"
+        value {
+          list {
+            shape {
+            }
+          }
+        }
+      }
+    }
+    node_def {
+      name: "OptimizeDataset/FlatMapDataset"
+      op: "FlatMapDataset"
+      input: "OptimizeDataset/TensorSliceDataset:handle:0"
+      device: "/device:CPU:0"
+      attr {
+        key: "Targuments"
+        value {
+          list {
+          }
+        }
+      }
+      attr {
+        key: "f"
+        value {
+          func {
+            name: "__inference_Dataset_flat_map_read_one_file_31"
+          }
+        }
+      }
+      attr {
+        key: "output_shapes"
+        value {
+          list {
+            shape {
+            }
+          }
+        }
+      }
+      attr {
+        key: "output_types"
+        value {
+          list {
+            type: DT_STRING
+          }
+        }
+      }
+    }
+    node_def {
+      name: "OptimizeDataset/MapDataset"
+      op: "MapDataset"
+      input: "OptimizeDataset/FlatMapDataset:handle:0"
+      device: "/device:CPU:0"
+      attr {
+        key: "Targuments"
+        value {
+          list {
+          }
+        }
+      }
+      attr {
+        key: "f"
+        value {
+          func {
+            name: "__inference_Dataset_map_decode_csv_110"
+          }
+        }
+      }
+      attr {
+        key: "output_shapes"
+        value {
+          list {
+            shape {
+            }
+            shape {
+            }
+            shape {
+            }
+            shape {
+            }
+            shape {
+            }
+            shape {
+            }
+            shape {
+            }
+            shape {
+            }
+            shape {
+            }
+            shape {
+            }
+            shape {
+            }
+            shape {
+            }
+            shape {
+            }
+            shape {
+            }
+            shape {
+            }
+            shape {
+            }
+            shape {
+            }
+            shape {
+            }
+            shape {
+            }
+            shape {
+            }
+            shape {
+            }
+            shape {
+            }
+            shape {
+            }
+            shape {
+            }
+            shape {
+            }
+          }
+        }
+      }
+      attr {
+        key: "output_types"
+        value {
+          list {
+            type: DT_FLOAT
+            type: DT_FLOAT
+            type: DT_FLOAT
+            type: DT_FLOAT
+            type: DT_FLOAT
+            type: DT_FLOAT
+            type: DT_FLOAT
+            type: DT_STRING
+            type: DT_FLOAT
+            type: DT_STRING
+            type: DT_FLOAT
+            type: DT_FLOAT
+            type: DT_FLOAT
+            type: DT_FLOAT
+            type: DT_FLOAT
+            type: DT_FLOAT
+            type: DT_FLOAT
+            type: DT_FLOAT
+            type: DT_FLOAT
+            type: DT_FLOAT
+            type: DT_FLOAT
+            type: DT_FLOAT
+            type: DT_STRING
+            type: DT_STRING
+            type: DT_INT32
+          }
+        }
+      }
+      attr {
+        key: "preserve_cardinality"
+        value {
+          b: false
+        }
+      }
+      attr {
+        key: "use_inter_op_parallelism"
+        value {
+          b: true
+        }
+      }
+    }
+    node_def {
+      name: "OptimizeDataset/buffer_size"
+      op: "Const"
+      device: "/device:CPU:0"
+      attr {
+        key: "dtype"
+        value {
+          type: DT_INT64
+        }
+      }
+      attr {
+        key: "value"
+        value {
+          tensor {
+            dtype: DT_INT64
+            tensor_shape {
+            }
+            int64_val: 2560
+          }
+        }
+      }
+    }
+    node_def {
+      name: "OptimizeDataset/seed"
+      op: "Const"
+      device: "/device:CPU:0"
+      attr {
+        key: "dtype"
+        value {
+          type: DT_INT64
+        }
+      }
+      attr {
+        key: "value"
+        value {
+          tensor {
+            dtype: DT_INT64
+            tensor_shape {
+            }
+            int64_val: 0
+          }
+        }
+      }
+    }
+    node_def {
+      name: "OptimizeDataset/seed2"
+      op: "Const"
+      device: "/device:CPU:0"
+      attr {
+        key: "dtype"
+        value {
+          type: DT_INT64
+        }
+      }
+      attr {
+        key: "value"
+        value {
+          tensor {
+            dtype: DT_INT64
+            tensor_shape {
+            }
+            int64_val: 0
+          }
+        }
+      }
+    }
+    node_def {
+      name: "OptimizeDataset/ShuffleDataset"
+      op: "ShuffleDataset"
+      input: "OptimizeDataset/MapDataset:handle:0"
+      input: "OptimizeDataset/buffer_size:output:0"
+      input: "OptimizeDataset/seed:output:0"
+      input: "OptimizeDataset/seed2:output:0"
+      device: "/device:CPU:0"
+      attr {
+        key: "output_shapes"
+        value {
+          list {
+            shape {
+            }
+            shape {
+            }
+            shape {
+            }
+            shape {
+            }
+            shape {
+            }
+            shape {
+            }
+            shape {
+            }
+            shape {
+            }
+            shape {
+            }
+            shape {
+            }
+            shape {
+            }
+            shape {
+            }
+            shape {
+            }
+            shape {
+            }
+            shape {
+            }
+            shape {
+            }
+            shape {
+            }
+            shape {
+            }
+            shape {
+            }
+            shape {
+            }
+            shape {
+            }
+            shape {
+            }
+            shape {
+            }
+            shape {
+            }
+            shape {
+            }
+          }
+        }
+      }
+      attr {
+        key: "output_types"
+        value {
+          list {
+            type: DT_FLOAT
+            type: DT_FLOAT
+            type: DT_FLOAT
+            type: DT_FLOAT
+            type: DT_FLOAT
+            type: DT_FLOAT
+            type: DT_FLOAT
+            type: DT_STRING
+            type: DT_FLOAT
+            type: DT_STRING
+            type: DT_FLOAT
+            type: DT_FLOAT
+            type: DT_FLOAT
+            type: DT_FLOAT
+            type: DT_FLOAT
+            type: DT_FLOAT
+            type: DT_FLOAT
+            type: DT_FLOAT
+            type: DT_FLOAT
+            type: DT_FLOAT
+            type: DT_FLOAT
+            type: DT_FLOAT
+            type: DT_STRING
+            type: DT_STRING
+            type: DT_INT32
+          }
+        }
+      }
+      attr {
+        key: "reshuffle_each_iteration"
+        value {
+          b: true
+        }
+      }
+    }
+    node_def {
+      name: "OptimizeDataset/count"
+      op: "Const"
+      device: "/device:CPU:0"
+      attr {
+        key: "dtype"
+        value {
+          type: DT_INT64
+        }
+      }
+      attr {
+        key: "value"
+        value {
+          tensor {
+            dtype: DT_INT64
+            tensor_shape {
+            }
+            int64_val: -1
+          }
+        }
+      }
+    }
+    node_def {
+      name: "OptimizeDataset/RepeatDataset"
+      op: "RepeatDataset"
+      input: "OptimizeDataset/ShuffleDataset:handle:0"
+      input: "OptimizeDataset/count:output:0"
+      device: "/device:CPU:0"
+      attr {
+        key: "output_shapes"
+        value {
+          list {
+            shape {
+            }
+            shape {
+            }
+            shape {
+            }
+            shape {
+            }
+            shape {
+            }
+            shape {
+            }
+            shape {
+            }
+            shape {
+            }
+            shape {
+            }
+            shape {
+            }
+            shape {
+            }
+            shape {
+            }
+            shape {
+            }
+            shape {
+            }
+            shape {
+            }
+            shape {
+            }
+            shape {
+            }
+            shape {
+            }
+            shape {
+            }
+            shape {
+            }
+            shape {
+            }
+            shape {
+            }
+            shape {
+            }
+            shape {
+            }
+            shape {
+            }
+          }
+        }
+      }
+      attr {
+        key: "output_types"
+        value {
+          list {
+            type: DT_FLOAT
+            type: DT_FLOAT
+            type: DT_FLOAT
+            type: DT_FLOAT
+            type: DT_FLOAT
+            type: DT_FLOAT
+            type: DT_FLOAT
+            type: DT_STRING
+            type: DT_FLOAT
+            type: DT_STRING
+            type: DT_FLOAT
+            type: DT_FLOAT
+            type: DT_FLOAT
+            type: DT_FLOAT
+            type: DT_FLOAT
+            type: DT_FLOAT
+            type: DT_FLOAT
+            type: DT_FLOAT
+            type: DT_FLOAT
+            type: DT_FLOAT
+            type: DT_FLOAT
+            type: DT_FLOAT
+            type: DT_STRING
+            type: DT_STRING
+            type: DT_INT32
+          }
+        }
+      }
+    }
+    node_def {
+      name: "OptimizeDataset/batch_size"
+      op: "Const"
+      device: "/device:CPU:0"
+      attr {
+        key: "dtype"
+        value {
+          type: DT_INT64
+        }
+      }
+      attr {
+        key: "value"
+        value {
+          tensor {
+            dtype: DT_INT64
+            tensor_shape {
+            }
+            int64_val: 256
+          }
+        }
+      }
+    }
+    node_def {
+      name: "OptimizeDataset/drop_remainder"
+      op: "Const"
+      device: "/device:CPU:0"
+      attr {
+        key: "dtype"
+        value {
+          type: DT_BOOL
+        }
+      }
+      attr {
+        key: "value"
+        value {
+          tensor {
+            dtype: DT_BOOL
+            tensor_shape {
+            }
+            bool_val: false
+          }
+        }
+      }
+    }
+    node_def {
+      name: "OptimizeDataset/BatchDatasetV2"
+      op: "BatchDatasetV2"
+      input: "OptimizeDataset/RepeatDataset:handle:0"
+      input: "OptimizeDataset/batch_size:output:0"
+      input: "OptimizeDataset/drop_remainder:output:0"
+      device: "/device:CPU:0"
+      attr {
+        key: "output_shapes"
+        value {
+          list {
+            shape {
+              dim {
+                size: -1
+              }
+            }
+            shape {
+              dim {
+                size: -1
+              }
+            }
+            shape {
+              dim {
+                size: -1
+              }
+            }
+            shape {
+              dim {
+                size: -1
+              }
+            }
+            shape {
+              dim {
+                size: -1
+              }
+            }
+            shape {
+              dim {
+                size: -1
+              }
+            }
+            shape {
+              dim {
+                size: -1
+              }
+            }
+            shape {
+              dim {
+                size: -1
+              }
+            }
+            shape {
+              dim {
+                size: -1
+              }
+            }
+            shape {
+              dim {
+                size: -1
+              }
+            }
+            shape {
+              dim {
+                size: -1
+              }
+            }
+            shape {
+              dim {
+                size: -1
+              }
+            }
+            shape {
+              dim {
+                size: -1
+              }
+            }
+            shape {
+              dim {
+                size: -1
+              }
+            }
+            shape {
+              dim {
+                size: -1
+              }
+            }
+            shape {
+              dim {
+                size: -1
+              }
+            }
+            shape {
+              dim {
+                size: -1
+              }
+            }
+            shape {
+              dim {
+                size: -1
+              }
+            }
+            shape {
+              dim {
+                size: -1
+              }
+            }
+            shape {
+              dim {
+                size: -1
+              }
+            }
+            shape {
+              dim {
+                size: -1
+              }
+            }
+            shape {
+              dim {
+                size: -1
+              }
+            }
+            shape {
+              dim {
+                size: -1
+              }
+            }
+            shape {
+              dim {
+                size: -1
+              }
+            }
+            shape {
+              dim {
+                size: -1
+              }
+            }
+          }
+        }
+      }
+      attr {
+        key: "output_types"
+        value {
+          list {
+            type: DT_FLOAT
+            type: DT_FLOAT
+            type: DT_FLOAT
+            type: DT_FLOAT
+            type: DT_FLOAT
+            type: DT_FLOAT
+            type: DT_FLOAT
+            type: DT_STRING
+            type: DT_FLOAT
+            type: DT_STRING
+            type: DT_FLOAT
+            type: DT_FLOAT
+            type: DT_FLOAT
+            type: DT_FLOAT
+            type: DT_FLOAT
+            type: DT_FLOAT
+            type: DT_FLOAT
+            type: DT_FLOAT
+            type: DT_FLOAT
+            type: DT_FLOAT
+            type: DT_FLOAT
+            type: DT_FLOAT
+            type: DT_STRING
+            type: DT_STRING
+            type: DT_INT32
+          }
+        }
+      }
+      attr {
+        key: "parallel_copy"
+        value {
+          b: false
+        }
+      }
+    }
+    node_def {
+      name: "OptimizeDataset"
+      op: "OptimizeDataset"
+      input: "OptimizeDataset/BatchDatasetV2:handle:0"
+      input: "optimizations:output:0"
+      device: "/device:CPU:0"
+      attr {
+        key: "optimization_configs"
+        value {
+          list {
+            s: "map_vectorization:use_choose_fastest:false"
+          }
+        }
+      }
+      attr {
+        key: "output_shapes"
+        value {
+          list {
+            shape {
+              dim {
+                size: -1
+              }
+            }
+            shape {
+              dim {
+                size: -1
+              }
+            }
+            shape {
+              dim {
+                size: -1
+              }
+            }
+            shape {
+              dim {
+                size: -1
+              }
+            }
+            shape {
+              dim {
+                size: -1
+              }
+            }
+            shape {
+              dim {
+                size: -1
+              }
+            }
+            shape {
+              dim {
+                size: -1
+              }
+            }
+            shape {
+              dim {
+                size: -1
+              }
+            }
+            shape {
+              dim {
+                size: -1
+              }
+            }
+            shape {
+              dim {
+                size: -1
+              }
+            }
+            shape {
+              dim {
+                size: -1
+              }
+            }
+            shape {
+              dim {
+                size: -1
+              }
+            }
+            shape {
+              dim {
+                size: -1
+              }
+            }
+            shape {
+              dim {
+                size: -1
+              }
+            }
+            shape {
+              dim {
+                size: -1
+              }
+            }
+            shape {
+              dim {
+                size: -1
+              }
+            }
+            shape {
+              dim {
+                size: -1
+              }
+            }
+            shape {
+              dim {
+                size: -1
+              }
+            }
+            shape {
+              dim {
+                size: -1
+              }
+            }
+            shape {
+              dim {
+                size: -1
+              }
+            }
+            shape {
+              dim {
+                size: -1
+              }
+            }
+            shape {
+              dim {
+                size: -1
+              }
+            }
+            shape {
+              dim {
+                size: -1
+              }
+            }
+            shape {
+              dim {
+                size: -1
+              }
+            }
+            shape {
+              dim {
+                size: -1
+              }
+            }
+          }
+        }
+      }
+      attr {
+        key: "output_types"
+        value {
+          list {
+            type: DT_FLOAT
+            type: DT_FLOAT
+            type: DT_FLOAT
+            type: DT_FLOAT
+            type: DT_FLOAT
+            type: DT_FLOAT
+            type: DT_FLOAT
+            type: DT_STRING
+            type: DT_FLOAT
+            type: DT_STRING
+            type: DT_FLOAT
+            type: DT_FLOAT
+            type: DT_FLOAT
+            type: DT_FLOAT
+            type: DT_FLOAT
+            type: DT_FLOAT
+            type: DT_FLOAT
+            type: DT_FLOAT
+            type: DT_FLOAT
+            type: DT_FLOAT
+            type: DT_FLOAT
+            type: DT_FLOAT
+            type: DT_STRING
+            type: DT_STRING
+            type: DT_INT32
+          }
+        }
+      }
+    }
+    node_def {
+      name: "ModelDataset"
+      op: "ModelDataset"
+      input: "OptimizeDataset:handle:0"
+      device: "/device:CPU:0"
+      attr {
+        key: "algorithm"
+        value {
+          i: 0
+        }
+      }
+      attr {
+        key: "cpu_budget"
+        value {
+          i: 0
+        }
+      }
+      attr {
+        key: "output_shapes"
+        value {
+          list {
+            shape {
+              dim {
+                size: -1
+              }
+            }
+            shape {
+              dim {
+                size: -1
+              }
+            }
+            shape {
+              dim {
+                size: -1
+              }
+            }
+            shape {
+              dim {
+                size: -1
+              }
+            }
+            shape {
+              dim {
+                size: -1
+              }
+            }
+            shape {
+              dim {
+                size: -1
+              }
+            }
+            shape {
+              dim {
+                size: -1
+              }
+            }
+            shape {
+              dim {
+                size: -1
+              }
+            }
+            shape {
+              dim {
+                size: -1
+              }
+            }
+            shape {
+              dim {
+                size: -1
+              }
+            }
+            shape {
+              dim {
+                size: -1
+              }
+            }
+            shape {
+              dim {
+                size: -1
+              }
+            }
+            shape {
+              dim {
+                size: -1
+              }
+            }
+            shape {
+              dim {
+                size: -1
+              }
+            }
+            shape {
+              dim {
+                size: -1
+              }
+            }
+            shape {
+              dim {
+                size: -1
+              }
+            }
+            shape {
+              dim {
+                size: -1
+              }
+            }
+            shape {
+              dim {
+                size: -1
+              }
+            }
+            shape {
+              dim {
+                size: -1
+              }
+            }
+            shape {
+              dim {
+                size: -1
+              }
+            }
+            shape {
+              dim {
+                size: -1
+              }
+            }
+            shape {
+              dim {
+                size: -1
+              }
+            }
+            shape {
+              dim {
+                size: -1
+              }
+            }
+            shape {
+              dim {
+                size: -1
+              }
+            }
+            shape {
+              dim {
+                size: -1
+              }
+            }
+          }
+        }
+      }
+      attr {
+        key: "output_types"
+        value {
+          list {
+            type: DT_FLOAT
+            type: DT_FLOAT
+            type: DT_FLOAT
+            type: DT_FLOAT
+            type: DT_FLOAT
+            type: DT_FLOAT
+            type: DT_FLOAT
+            type: DT_STRING
+            type: DT_FLOAT
+            type: DT_STRING
+            type: DT_FLOAT
+            type: DT_FLOAT
+            type: DT_FLOAT
+            type: DT_FLOAT
+            type: DT_FLOAT
+            type: DT_FLOAT
+            type: DT_FLOAT
+            type: DT_FLOAT
+            type: DT_FLOAT
+            type: DT_FLOAT
+            type: DT_FLOAT
+            type: DT_FLOAT
+            type: DT_STRING
+            type: DT_STRING
+            type: DT_INT32
+          }
+        }
+      }
+    }
+    ret {
+      key: "modeldataset"
+      value: "ModelDataset:handle:0"
+    }
+    attr {
+      key: "_disable_call_shape_inference"
+      value {
+        b: true
+      }
+    }
+  }
   function {
     signature {
       name: "cond_false_718"
@@ -22577,1274 +23750,6 @@ library {
   }
   function {
     signature {
-      name: "_make_dataset_JvdGUVPOjA8"
-      output_arg {
-        name: "modeldataset"
-        type: DT_VARIANT
-      }
-      description: "Factory function for a dataset."
-      is_stateful: true
-    }
-    node_def {
-      name: "optimizations"
-      op: "Const"
-      device: "/device:CPU:0"
-      attr {
-        key: "dtype"
-        value {
-          type: DT_STRING
-        }
-      }
-      attr {
-        key: "value"
-        value {
-          tensor {
-            dtype: DT_STRING
-            tensor_shape {
-              dim {
-                size: 3
-              }
-            }
-            string_val: "map_and_batch_fusion"
-            string_val: "noop_elimination"
-            string_val: "shuffle_and_repeat_fusion"
-          }
-        }
-      }
-    }
-    node_def {
-      name: "OptimizeDataset/Const"
-      op: "Const"
-      device: "/device:CPU:0"
-      attr {
-        key: "dtype"
-        value {
-          type: DT_STRING
-        }
-      }
-      attr {
-        key: "value"
-        value {
-          tensor {
-            dtype: DT_STRING
-            tensor_shape {
-              dim {
-                size: 1
-              }
-            }
-            string_val: "gs://credit_card_default/credit_default/preproc/train.csv-00000-of-00002"
-          }
-        }
-      }
-    }
-    node_def {
-      name: "OptimizeDataset/flat_filenames/shape"
-      op: "Const"
-      device: "/device:CPU:0"
-      attr {
-        key: "dtype"
-        value {
-          type: DT_INT32
-        }
-      }
-      attr {
-        key: "value"
-        value {
-          tensor {
-            dtype: DT_INT32
-            tensor_shape {
-              dim {
-                size: 1
-              }
-            }
-            int_val: -1
-          }
-        }
-      }
-    }
-    node_def {
-      name: "OptimizeDataset/flat_filenames"
-      op: "Reshape"
-      input: "OptimizeDataset/Const:output:0"
-      input: "OptimizeDataset/flat_filenames/shape:output:0"
-      device: "/device:CPU:0"
-      attr {
-        key: "T"
-        value {
-          type: DT_STRING
-        }
-      }
-      attr {
-        key: "Tshape"
-        value {
-          type: DT_INT32
-        }
-      }
-    }
-    node_def {
-      name: "OptimizeDataset/TensorSliceDataset"
-      op: "TensorSliceDataset"
-      input: "OptimizeDataset/flat_filenames:output:0"
-      device: "/device:CPU:0"
-      attr {
-        key: "Toutput_types"
-        value {
-          list {
-            type: DT_STRING
-          }
-        }
-      }
-      attr {
-        key: "output_shapes"
-        value {
-          list {
-            shape {
-            }
-          }
-        }
-      }
-    }
-    node_def {
-      name: "OptimizeDataset/FlatMapDataset"
-      op: "FlatMapDataset"
-      input: "OptimizeDataset/TensorSliceDataset:handle:0"
-      device: "/device:CPU:0"
-      attr {
-        key: "Targuments"
-        value {
-          list {
-          }
-        }
-      }
-      attr {
-        key: "f"
-        value {
-          func {
-            name: "__inference_Dataset_flat_map_read_one_file_31"
-          }
-        }
-      }
-      attr {
-        key: "output_shapes"
-        value {
-          list {
-            shape {
-            }
-          }
-        }
-      }
-      attr {
-        key: "output_types"
-        value {
-          list {
-            type: DT_STRING
-          }
-        }
-      }
-    }
-    node_def {
-      name: "OptimizeDataset/MapDataset"
-      op: "MapDataset"
-      input: "OptimizeDataset/FlatMapDataset:handle:0"
-      device: "/device:CPU:0"
-      attr {
-        key: "Targuments"
-        value {
-          list {
-          }
-        }
-      }
-      attr {
-        key: "f"
-        value {
-          func {
-            name: "__inference_Dataset_map_decode_csv_110"
-          }
-        }
-      }
-      attr {
-        key: "output_shapes"
-        value {
-          list {
-            shape {
-            }
-            shape {
-            }
-            shape {
-            }
-            shape {
-            }
-            shape {
-            }
-            shape {
-            }
-            shape {
-            }
-            shape {
-            }
-            shape {
-            }
-            shape {
-            }
-            shape {
-            }
-            shape {
-            }
-            shape {
-            }
-            shape {
-            }
-            shape {
-            }
-            shape {
-            }
-            shape {
-            }
-            shape {
-            }
-            shape {
-            }
-            shape {
-            }
-            shape {
-            }
-            shape {
-            }
-            shape {
-            }
-            shape {
-            }
-            shape {
-            }
-          }
-        }
-      }
-      attr {
-        key: "output_types"
-        value {
-          list {
-            type: DT_FLOAT
-            type: DT_FLOAT
-            type: DT_FLOAT
-            type: DT_FLOAT
-            type: DT_FLOAT
-            type: DT_FLOAT
-            type: DT_FLOAT
-            type: DT_STRING
-            type: DT_FLOAT
-            type: DT_STRING
-            type: DT_FLOAT
-            type: DT_FLOAT
-            type: DT_FLOAT
-            type: DT_FLOAT
-            type: DT_FLOAT
-            type: DT_FLOAT
-            type: DT_FLOAT
-            type: DT_FLOAT
-            type: DT_FLOAT
-            type: DT_FLOAT
-            type: DT_FLOAT
-            type: DT_FLOAT
-            type: DT_STRING
-            type: DT_STRING
-            type: DT_INT32
-          }
-        }
-      }
-      attr {
-        key: "preserve_cardinality"
-        value {
-          b: false
-        }
-      }
-      attr {
-        key: "use_inter_op_parallelism"
-        value {
-          b: true
-        }
-      }
-    }
-    node_def {
-      name: "OptimizeDataset/buffer_size"
-      op: "Const"
-      device: "/device:CPU:0"
-      attr {
-        key: "dtype"
-        value {
-          type: DT_INT64
-        }
-      }
-      attr {
-        key: "value"
-        value {
-          tensor {
-            dtype: DT_INT64
-            tensor_shape {
-            }
-            int64_val: 2560
-          }
-        }
-      }
-    }
-    node_def {
-      name: "OptimizeDataset/seed"
-      op: "Const"
-      device: "/device:CPU:0"
-      attr {
-        key: "dtype"
-        value {
-          type: DT_INT64
-        }
-      }
-      attr {
-        key: "value"
-        value {
-          tensor {
-            dtype: DT_INT64
-            tensor_shape {
-            }
-            int64_val: 0
-          }
-        }
-      }
-    }
-    node_def {
-      name: "OptimizeDataset/seed2"
-      op: "Const"
-      device: "/device:CPU:0"
-      attr {
-        key: "dtype"
-        value {
-          type: DT_INT64
-        }
-      }
-      attr {
-        key: "value"
-        value {
-          tensor {
-            dtype: DT_INT64
-            tensor_shape {
-            }
-            int64_val: 0
-          }
-        }
-      }
-    }
-    node_def {
-      name: "OptimizeDataset/ShuffleDataset"
-      op: "ShuffleDataset"
-      input: "OptimizeDataset/MapDataset:handle:0"
-      input: "OptimizeDataset/buffer_size:output:0"
-      input: "OptimizeDataset/seed:output:0"
-      input: "OptimizeDataset/seed2:output:0"
-      device: "/device:CPU:0"
-      attr {
-        key: "output_shapes"
-        value {
-          list {
-            shape {
-            }
-            shape {
-            }
-            shape {
-            }
-            shape {
-            }
-            shape {
-            }
-            shape {
-            }
-            shape {
-            }
-            shape {
-            }
-            shape {
-            }
-            shape {
-            }
-            shape {
-            }
-            shape {
-            }
-            shape {
-            }
-            shape {
-            }
-            shape {
-            }
-            shape {
-            }
-            shape {
-            }
-            shape {
-            }
-            shape {
-            }
-            shape {
-            }
-            shape {
-            }
-            shape {
-            }
-            shape {
-            }
-            shape {
-            }
-            shape {
-            }
-          }
-        }
-      }
-      attr {
-        key: "output_types"
-        value {
-          list {
-            type: DT_FLOAT
-            type: DT_FLOAT
-            type: DT_FLOAT
-            type: DT_FLOAT
-            type: DT_FLOAT
-            type: DT_FLOAT
-            type: DT_FLOAT
-            type: DT_STRING
-            type: DT_FLOAT
-            type: DT_STRING
-            type: DT_FLOAT
-            type: DT_FLOAT
-            type: DT_FLOAT
-            type: DT_FLOAT
-            type: DT_FLOAT
-            type: DT_FLOAT
-            type: DT_FLOAT
-            type: DT_FLOAT
-            type: DT_FLOAT
-            type: DT_FLOAT
-            type: DT_FLOAT
-            type: DT_FLOAT
-            type: DT_STRING
-            type: DT_STRING
-            type: DT_INT32
-          }
-        }
-      }
-      attr {
-        key: "reshuffle_each_iteration"
-        value {
-          b: true
-        }
-      }
-    }
-    node_def {
-      name: "OptimizeDataset/count"
-      op: "Const"
-      device: "/device:CPU:0"
-      attr {
-        key: "dtype"
-        value {
-          type: DT_INT64
-        }
-      }
-      attr {
-        key: "value"
-        value {
-          tensor {
-            dtype: DT_INT64
-            tensor_shape {
-            }
-            int64_val: -1
-          }
-        }
-      }
-    }
-    node_def {
-      name: "OptimizeDataset/RepeatDataset"
-      op: "RepeatDataset"
-      input: "OptimizeDataset/ShuffleDataset:handle:0"
-      input: "OptimizeDataset/count:output:0"
-      device: "/device:CPU:0"
-      attr {
-        key: "output_shapes"
-        value {
-          list {
-            shape {
-            }
-            shape {
-            }
-            shape {
-            }
-            shape {
-            }
-            shape {
-            }
-            shape {
-            }
-            shape {
-            }
-            shape {
-            }
-            shape {
-            }
-            shape {
-            }
-            shape {
-            }
-            shape {
-            }
-            shape {
-            }
-            shape {
-            }
-            shape {
-            }
-            shape {
-            }
-            shape {
-            }
-            shape {
-            }
-            shape {
-            }
-            shape {
-            }
-            shape {
-            }
-            shape {
-            }
-            shape {
-            }
-            shape {
-            }
-            shape {
-            }
-          }
-        }
-      }
-      attr {
-        key: "output_types"
-        value {
-          list {
-            type: DT_FLOAT
-            type: DT_FLOAT
-            type: DT_FLOAT
-            type: DT_FLOAT
-            type: DT_FLOAT
-            type: DT_FLOAT
-            type: DT_FLOAT
-            type: DT_STRING
-            type: DT_FLOAT
-            type: DT_STRING
-            type: DT_FLOAT
-            type: DT_FLOAT
-            type: DT_FLOAT
-            type: DT_FLOAT
-            type: DT_FLOAT
-            type: DT_FLOAT
-            type: DT_FLOAT
-            type: DT_FLOAT
-            type: DT_FLOAT
-            type: DT_FLOAT
-            type: DT_FLOAT
-            type: DT_FLOAT
-            type: DT_STRING
-            type: DT_STRING
-            type: DT_INT32
-          }
-        }
-      }
-    }
-    node_def {
-      name: "OptimizeDataset/batch_size"
-      op: "Const"
-      device: "/device:CPU:0"
-      attr {
-        key: "dtype"
-        value {
-          type: DT_INT64
-        }
-      }
-      attr {
-        key: "value"
-        value {
-          tensor {
-            dtype: DT_INT64
-            tensor_shape {
-            }
-            int64_val: 256
-          }
-        }
-      }
-    }
-    node_def {
-      name: "OptimizeDataset/drop_remainder"
-      op: "Const"
-      device: "/device:CPU:0"
-      attr {
-        key: "dtype"
-        value {
-          type: DT_BOOL
-        }
-      }
-      attr {
-        key: "value"
-        value {
-          tensor {
-            dtype: DT_BOOL
-            tensor_shape {
-            }
-            bool_val: false
-          }
-        }
-      }
-    }
-    node_def {
-      name: "OptimizeDataset/BatchDatasetV2"
-      op: "BatchDatasetV2"
-      input: "OptimizeDataset/RepeatDataset:handle:0"
-      input: "OptimizeDataset/batch_size:output:0"
-      input: "OptimizeDataset/drop_remainder:output:0"
-      device: "/device:CPU:0"
-      attr {
-        key: "output_shapes"
-        value {
-          list {
-            shape {
-              dim {
-                size: -1
-              }
-            }
-            shape {
-              dim {
-                size: -1
-              }
-            }
-            shape {
-              dim {
-                size: -1
-              }
-            }
-            shape {
-              dim {
-                size: -1
-              }
-            }
-            shape {
-              dim {
-                size: -1
-              }
-            }
-            shape {
-              dim {
-                size: -1
-              }
-            }
-            shape {
-              dim {
-                size: -1
-              }
-            }
-            shape {
-              dim {
-                size: -1
-              }
-            }
-            shape {
-              dim {
-                size: -1
-              }
-            }
-            shape {
-              dim {
-                size: -1
-              }
-            }
-            shape {
-              dim {
-                size: -1
-              }
-            }
-            shape {
-              dim {
-                size: -1
-              }
-            }
-            shape {
-              dim {
-                size: -1
-              }
-            }
-            shape {
-              dim {
-                size: -1
-              }
-            }
-            shape {
-              dim {
-                size: -1
-              }
-            }
-            shape {
-              dim {
-                size: -1
-              }
-            }
-            shape {
-              dim {
-                size: -1
-              }
-            }
-            shape {
-              dim {
-                size: -1
-              }
-            }
-            shape {
-              dim {
-                size: -1
-              }
-            }
-            shape {
-              dim {
-                size: -1
-              }
-            }
-            shape {
-              dim {
-                size: -1
-              }
-            }
-            shape {
-              dim {
-                size: -1
-              }
-            }
-            shape {
-              dim {
-                size: -1
-              }
-            }
-            shape {
-              dim {
-                size: -1
-              }
-            }
-            shape {
-              dim {
-                size: -1
-              }
-            }
-          }
-        }
-      }
-      attr {
-        key: "output_types"
-        value {
-          list {
-            type: DT_FLOAT
-            type: DT_FLOAT
-            type: DT_FLOAT
-            type: DT_FLOAT
-            type: DT_FLOAT
-            type: DT_FLOAT
-            type: DT_FLOAT
-            type: DT_STRING
-            type: DT_FLOAT
-            type: DT_STRING
-            type: DT_FLOAT
-            type: DT_FLOAT
-            type: DT_FLOAT
-            type: DT_FLOAT
-            type: DT_FLOAT
-            type: DT_FLOAT
-            type: DT_FLOAT
-            type: DT_FLOAT
-            type: DT_FLOAT
-            type: DT_FLOAT
-            type: DT_FLOAT
-            type: DT_FLOAT
-            type: DT_STRING
-            type: DT_STRING
-            type: DT_INT32
-          }
-        }
-      }
-      attr {
-        key: "parallel_copy"
-        value {
-          b: false
-        }
-      }
-    }
-    node_def {
-      name: "OptimizeDataset"
-      op: "OptimizeDataset"
-      input: "OptimizeDataset/BatchDatasetV2:handle:0"
-      input: "optimizations:output:0"
-      device: "/device:CPU:0"
-      attr {
-        key: "optimization_configs"
-        value {
-          list {
-            s: "map_vectorization:use_choose_fastest:false"
-          }
-        }
-      }
-      attr {
-        key: "output_shapes"
-        value {
-          list {
-            shape {
-              dim {
-                size: -1
-              }
-            }
-            shape {
-              dim {
-                size: -1
-              }
-            }
-            shape {
-              dim {
-                size: -1
-              }
-            }
-            shape {
-              dim {
-                size: -1
-              }
-            }
-            shape {
-              dim {
-                size: -1
-              }
-            }
-            shape {
-              dim {
-                size: -1
-              }
-            }
-            shape {
-              dim {
-                size: -1
-              }
-            }
-            shape {
-              dim {
-                size: -1
-              }
-            }
-            shape {
-              dim {
-                size: -1
-              }
-            }
-            shape {
-              dim {
-                size: -1
-              }
-            }
-            shape {
-              dim {
-                size: -1
-              }
-            }
-            shape {
-              dim {
-                size: -1
-              }
-            }
-            shape {
-              dim {
-                size: -1
-              }
-            }
-            shape {
-              dim {
-                size: -1
-              }
-            }
-            shape {
-              dim {
-                size: -1
-              }
-            }
-            shape {
-              dim {
-                size: -1
-              }
-            }
-            shape {
-              dim {
-                size: -1
-              }
-            }
-            shape {
-              dim {
-                size: -1
-              }
-            }
-            shape {
-              dim {
-                size: -1
-              }
-            }
-            shape {
-              dim {
-                size: -1
-              }
-            }
-            shape {
-              dim {
-                size: -1
-              }
-            }
-            shape {
-              dim {
-                size: -1
-              }
-            }
-            shape {
-              dim {
-                size: -1
-              }
-            }
-            shape {
-              dim {
-                size: -1
-              }
-            }
-            shape {
-              dim {
-                size: -1
-              }
-            }
-          }
-        }
-      }
-      attr {
-        key: "output_types"
-        value {
-          list {
-            type: DT_FLOAT
-            type: DT_FLOAT
-            type: DT_FLOAT
-            type: DT_FLOAT
-            type: DT_FLOAT
-            type: DT_FLOAT
-            type: DT_FLOAT
-            type: DT_STRING
-            type: DT_FLOAT
-            type: DT_STRING
-            type: DT_FLOAT
-            type: DT_FLOAT
-            type: DT_FLOAT
-            type: DT_FLOAT
-            type: DT_FLOAT
-            type: DT_FLOAT
-            type: DT_FLOAT
-            type: DT_FLOAT
-            type: DT_FLOAT
-            type: DT_FLOAT
-            type: DT_FLOAT
-            type: DT_FLOAT
-            type: DT_STRING
-            type: DT_STRING
-            type: DT_INT32
-          }
-        }
-      }
-    }
-    node_def {
-      name: "ModelDataset"
-      op: "ModelDataset"
-      input: "OptimizeDataset:handle:0"
-      device: "/device:CPU:0"
-      attr {
-        key: "algorithm"
-        value {
-          i: 0
-        }
-      }
-      attr {
-        key: "cpu_budget"
-        value {
-          i: 0
-        }
-      }
-      attr {
-        key: "output_shapes"
-        value {
-          list {
-            shape {
-              dim {
-                size: -1
-              }
-            }
-            shape {
-              dim {
-                size: -1
-              }
-            }
-            shape {
-              dim {
-                size: -1
-              }
-            }
-            shape {
-              dim {
-                size: -1
-              }
-            }
-            shape {
-              dim {
-                size: -1
-              }
-            }
-            shape {
-              dim {
-                size: -1
-              }
-            }
-            shape {
-              dim {
-                size: -1
-              }
-            }
-            shape {
-              dim {
-                size: -1
-              }
-            }
-            shape {
-              dim {
-                size: -1
-              }
-            }
-            shape {
-              dim {
-                size: -1
-              }
-            }
-            shape {
-              dim {
-                size: -1
-              }
-            }
-            shape {
-              dim {
-                size: -1
-              }
-            }
-            shape {
-              dim {
-                size: -1
-              }
-            }
-            shape {
-              dim {
-                size: -1
-              }
-            }
-            shape {
-              dim {
-                size: -1
-              }
-            }
-            shape {
-              dim {
-                size: -1
-              }
-            }
-            shape {
-              dim {
-                size: -1
-              }
-            }
-            shape {
-              dim {
-                size: -1
-              }
-            }
-            shape {
-              dim {
-                size: -1
-              }
-            }
-            shape {
-              dim {
-                size: -1
-              }
-            }
-            shape {
-              dim {
-                size: -1
-              }
-            }
-            shape {
-              dim {
-                size: -1
-              }
-            }
-            shape {
-              dim {
-                size: -1
-              }
-            }
-            shape {
-              dim {
-                size: -1
-              }
-            }
-            shape {
-              dim {
-                size: -1
-              }
-            }
-          }
-        }
-      }
-      attr {
-        key: "output_types"
-        value {
-          list {
-            type: DT_FLOAT
-            type: DT_FLOAT
-            type: DT_FLOAT
-            type: DT_FLOAT
-            type: DT_FLOAT
-            type: DT_FLOAT
-            type: DT_FLOAT
-            type: DT_STRING
-            type: DT_FLOAT
-            type: DT_STRING
-            type: DT_FLOAT
-            type: DT_FLOAT
-            type: DT_FLOAT
-            type: DT_FLOAT
-            type: DT_FLOAT
-            type: DT_FLOAT
-            type: DT_FLOAT
-            type: DT_FLOAT
-            type: DT_FLOAT
-            type: DT_FLOAT
-            type: DT_FLOAT
-            type: DT_FLOAT
-            type: DT_STRING
-            type: DT_STRING
-            type: DT_INT32
-          }
-        }
-      }
-    }
-    ret {
-      key: "modeldataset"
-      value: "ModelDataset:handle:0"
-    }
-    attr {
-      key: "_disable_call_shape_inference"
-      value {
-        b: true
-      }
-    }
-  }
-  function {
-    signature {
-      name: "cond_true_717"
-      input_arg {
-        name: "identity_cond_readvariableop"
-        type: DT_BOOL
-      }
-      input_arg {
-        name: "placeholder"
-        type: DT_INT64
-      }
-      input_arg {
-        name: "placeholder_1"
-        type: DT_RESOURCE
-      }
-      input_arg {
-        name: "placeholder_2"
-        type: DT_RESOURCE
-      }
-      output_arg {
-        name: "identity"
-        type: DT_BOOL
-      }
-    }
-    node_def {
-      name: "NoOp"
-      op: "NoOp"
-      attr {
-        key: "_output_shapes"
-        value {
-          list {
-          }
-        }
-      }
-    }
-    node_def {
-      name: "Identity"
-      op: "Identity"
-      input: "identity_cond_readvariableop"
-      input: "^NoOp"
-      attr {
-        key: "T"
-        value {
-          type: DT_BOOL
-        }
-      }
-      attr {
-        key: "_output_shapes"
-        value {
-          list {
-            shape {
-            }
-          }
-        }
-      }
-    }
-    ret {
-      key: "identity"
-      value: "Identity:output:0"
-    }
-    attr {
-      key: "_input_shapes"
-      value {
-        list {
-          shape {
-          }
-          shape {
-          }
-          shape {
-            unknown_rank: true
-          }
-          shape {
-            unknown_rank: true
-          }
-        }
-      }
-    }
-    arg_attr {
-      value {
-      }
-    }
-    arg_attr {
-      key: 1
-      value {
-      }
-    }
-    arg_attr {
-      key: 2
-      value {
-      }
-    }
-    arg_attr {
-      key: 3
-      value {
-      }
-    }
-  }
-  function {
-    signature {
       name: "wait_until_n_batches_for_bias_accumulated_false_701"
       input_arg {
         name: "placeholder"
@@ -23972,6 +23877,103 @@ library {
     }
     arg_attr {
       key: 6
+      value {
+      }
+    }
+  }
+  function {
+    signature {
+      name: "cond_true_717"
+      input_arg {
+        name: "identity_cond_readvariableop"
+        type: DT_BOOL
+      }
+      input_arg {
+        name: "placeholder"
+        type: DT_INT64
+      }
+      input_arg {
+        name: "placeholder_1"
+        type: DT_RESOURCE
+      }
+      input_arg {
+        name: "placeholder_2"
+        type: DT_RESOURCE
+      }
+      output_arg {
+        name: "identity"
+        type: DT_BOOL
+      }
+    }
+    node_def {
+      name: "NoOp"
+      op: "NoOp"
+      attr {
+        key: "_output_shapes"
+        value {
+          list {
+          }
+        }
+      }
+    }
+    node_def {
+      name: "Identity"
+      op: "Identity"
+      input: "identity_cond_readvariableop"
+      input: "^NoOp"
+      attr {
+        key: "T"
+        value {
+          type: DT_BOOL
+        }
+      }
+      attr {
+        key: "_output_shapes"
+        value {
+          list {
+            shape {
+            }
+          }
+        }
+      }
+    }
+    ret {
+      key: "identity"
+      value: "Identity:output:0"
+    }
+    attr {
+      key: "_input_shapes"
+      value {
+        list {
+          shape {
+          }
+          shape {
+          }
+          shape {
+            unknown_rank: true
+          }
+          shape {
+            unknown_rank: true
+          }
+        }
+      }
+    }
+    arg_attr {
+      value {
+      }
+    }
+    arg_attr {
+      key: 1
+      value {
+      }
+    }
+    arg_attr {
+      key: 2
+      value {
+      }
+    }
+    arg_attr {
+      key: 3
       value {
       }
     }
@@ -24112,2144 +24114,6 @@ library {
             s: "args_0"
           }
         }
-      }
-    }
-  }
-  function {
-    signature {
-      name: "cond_true_685"
-      input_arg {
-        name: "stack_mul"
-        type: DT_FLOAT
-      }
-      input_arg {
-        name: "stack_mul_2"
-        type: DT_FLOAT
-      }
-      input_arg {
-        name: "resourceaccumulatorapplygradient_boosted_trees_conditional_accumulator_2"
-        type: DT_RESOURCE
-      }
-      input_arg {
-        name: "resourceaccumulatorapplygradient_boosted_trees_stamp_token"
-        type: DT_INT64
-      }
-      input_arg {
-        name: "wait_until_n_batches_for_bias_accumulated_boosted_trees"
-        type: DT_RESOURCE
-      }
-      input_arg {
-        name: "wait_until_n_batches_for_bias_accumulated_boosted_trees_center_bias_needed"
-        type: DT_RESOURCE
-      }
-      input_arg {
-        name: "wait_until_n_batches_for_bias_accumulated_boosted_trees_conditional_accumulator"
-        type: DT_RESOURCE
-      }
-      input_arg {
-        name: "wait_until_n_batches_for_bias_accumulated_boosted_trees_conditional_accumulator_1"
-        type: DT_RESOURCE
-      }
-      input_arg {
-        name: "placeholder"
-        type: DT_FLOAT
-      }
-      input_arg {
-        name: "placeholder_1"
-        type: DT_FLOAT
-      }
-      input_arg {
-        name: "placeholder_2"
-        type: DT_FLOAT
-      }
-      input_arg {
-        name: "placeholder_3"
-        type: DT_FLOAT
-      }
-      input_arg {
-        name: "placeholder_4"
-        type: DT_FLOAT
-      }
-      input_arg {
-        name: "placeholder_5"
-        type: DT_FLOAT
-      }
-      input_arg {
-        name: "placeholder_6"
-        type: DT_FLOAT
-      }
-      input_arg {
-        name: "placeholder_7"
-        type: DT_FLOAT
-      }
-      input_arg {
-        name: "placeholder_8"
-        type: DT_FLOAT
-      }
-      input_arg {
-        name: "placeholder_9"
-        type: DT_FLOAT
-      }
-      input_arg {
-        name: "placeholder_10"
-        type: DT_FLOAT
-      }
-      input_arg {
-        name: "placeholder_11"
-        type: DT_FLOAT
-      }
-      input_arg {
-        name: "placeholder_12"
-        type: DT_FLOAT
-      }
-      input_arg {
-        name: "placeholder_13"
-        type: DT_FLOAT
-      }
-      input_arg {
-        name: "placeholder_14"
-        type: DT_FLOAT
-      }
-      input_arg {
-        name: "placeholder_15"
-        type: DT_FLOAT
-      }
-      input_arg {
-        name: "placeholder_16"
-        type: DT_FLOAT
-      }
-      input_arg {
-        name: "placeholder_17"
-        type: DT_FLOAT
-      }
-      input_arg {
-        name: "placeholder_18"
-        type: DT_FLOAT
-      }
-      input_arg {
-        name: "placeholder_19"
-        type: DT_FLOAT
-      }
-      input_arg {
-        name: "placeholder_20"
-        type: DT_FLOAT
-      }
-      input_arg {
-        name: "placeholder_21"
-        type: DT_FLOAT
-      }
-      input_arg {
-        name: "placeholder_22"
-        type: DT_FLOAT
-      }
-      input_arg {
-        name: "placeholder_23"
-        type: DT_FLOAT
-      }
-      input_arg {
-        name: "placeholder_24"
-        type: DT_FLOAT
-      }
-      input_arg {
-        name: "placeholder_25"
-        type: DT_FLOAT
-      }
-      input_arg {
-        name: "placeholder_26"
-        type: DT_FLOAT
-      }
-      input_arg {
-        name: "placeholder_27"
-        type: DT_FLOAT
-      }
-      input_arg {
-        name: "placeholder_28"
-        type: DT_INT32
-      }
-      output_arg {
-        name: "wait_until_n_batches_for_bias_accumulated_identity"
-        type: DT_BOOL
-      }
-      is_stateful: true
-    }
-    node_def {
-      name: "stack"
-      op: "Pack"
-      input: "stack_mul"
-      input: "stack_mul_2"
-      attr {
-        key: "N"
-        value {
-          i: 2
-        }
-      }
-      attr {
-        key: "T"
-        value {
-          type: DT_FLOAT
-        }
-      }
-      attr {
-        key: "_output_shapes"
-        value {
-          list {
-            shape {
-              dim {
-                size: 2
-              }
-              dim {
-                size: -1
-              }
-              dim {
-                size: 1
-              }
-            }
-          }
-        }
-      }
-      attr {
-        key: "axis"
-        value {
-          i: 0
-        }
-      }
-    }
-    node_def {
-      name: "Mean/reduction_indices"
-      op: "Const"
-      attr {
-        key: "_output_shapes"
-        value {
-          list {
-            shape {
-            }
-          }
-        }
-      }
-      attr {
-        key: "dtype"
-        value {
-          type: DT_INT32
-        }
-      }
-      attr {
-        key: "value"
-        value {
-          tensor {
-            dtype: DT_INT32
-            tensor_shape {
-            }
-            int_val: 1
-          }
-        }
-      }
-    }
-    node_def {
-      name: "Mean"
-      op: "Mean"
-      input: "stack:output:0"
-      input: "Mean/reduction_indices:output:0"
-      attr {
-        key: "T"
-        value {
-          type: DT_FLOAT
-        }
-      }
-      attr {
-        key: "Tidx"
-        value {
-          type: DT_INT32
-        }
-      }
-      attr {
-        key: "_output_shapes"
-        value {
-          list {
-            shape {
-              dim {
-                size: 2
-              }
-              dim {
-                size: 1
-              }
-            }
-          }
-        }
-      }
-      attr {
-        key: "keep_dims"
-        value {
-          b: false
-        }
-      }
-    }
-    node_def {
-      name: "ResourceAccumulatorApplyGradient"
-      op: "ResourceAccumulatorApplyGradient"
-      input: "resourceaccumulatorapplygradient_boosted_trees_conditional_accumulator_2"
-      input: "resourceaccumulatorapplygradient_boosted_trees_stamp_token"
-      input: "Mean:output:0"
-      attr {
-        key: "_output_shapes"
-        value {
-          list {
-          }
-        }
-      }
-      attr {
-        key: "dtype"
-        value {
-          type: DT_FLOAT
-        }
-      }
-    }
-    node_def {
-      name: "conditional_accumulator_2_NumAccumulated"
-      op: "ResourceAccumulatorNumAccumulated"
-      input: "resourceaccumulatorapplygradient_boosted_trees_conditional_accumulator_2"
-      input: "^ResourceAccumulatorApplyGradient"
-      attr {
-        key: "_output_shapes"
-        value {
-          list {
-            shape {
-            }
-          }
-        }
-      }
-    }
-    node_def {
-      name: "GreaterEqual/y"
-      op: "Const"
-      input: "^ResourceAccumulatorApplyGradient"
-      attr {
-        key: "_output_shapes"
-        value {
-          list {
-            shape {
-            }
-          }
-        }
-      }
-      attr {
-        key: "dtype"
-        value {
-          type: DT_INT32
-        }
-      }
-      attr {
-        key: "value"
-        value {
-          tensor {
-            dtype: DT_INT32
-            tensor_shape {
-            }
-            int_val: 1
-          }
-        }
-      }
-    }
-    node_def {
-      name: "GreaterEqual"
-      op: "GreaterEqual"
-      input: "conditional_accumulator_2_NumAccumulated:num_accumulated:0"
-      input: "GreaterEqual/y:output:0"
-      attr {
-        key: "T"
-        value {
-          type: DT_INT32
-        }
-      }
-      attr {
-        key: "_output_shapes"
-        value {
-          list {
-            shape {
-            }
-          }
-        }
-      }
-    }
-    node_def {
-      name: "wait_until_n_batches_for_bias_accumulated"
-      op: "If"
-      input: "GreaterEqual:z:0"
-      input: "resourceaccumulatorapplygradient_boosted_trees_conditional_accumulator_2"
-      input: "wait_until_n_batches_for_bias_accumulated_boosted_trees"
-      input: "wait_until_n_batches_for_bias_accumulated_boosted_trees_center_bias_needed"
-      input: "resourceaccumulatorapplygradient_boosted_trees_stamp_token"
-      input: "wait_until_n_batches_for_bias_accumulated_boosted_trees_conditional_accumulator"
-      input: "wait_until_n_batches_for_bias_accumulated_boosted_trees_conditional_accumulator_1"
-      input: "GreaterEqual:z:0"
-      attr {
-        key: "Tcond"
-        value {
-          type: DT_BOOL
-        }
-      }
-      attr {
-        key: "Tin"
-        value {
-          list {
-            type: DT_RESOURCE
-            type: DT_RESOURCE
-            type: DT_RESOURCE
-            type: DT_INT64
-            type: DT_RESOURCE
-            type: DT_RESOURCE
-            type: DT_BOOL
-          }
-        }
-      }
-      attr {
-        key: "Tout"
-        value {
-          list {
-            type: DT_BOOL
-          }
-        }
-      }
-      attr {
-        key: "_lower_using_switch_merge"
-        value {
-          b: true
-        }
-      }
-      attr {
-        key: "_output_shapes"
-        value {
-          list {
-            shape {
-            }
-          }
-        }
-      }
-      attr {
-        key: "else_branch"
-        value {
-          func {
-            name: "wait_until_n_batches_for_bias_accumulated_false_701"
-          }
-        }
-      }
-      attr {
-        key: "output_shapes"
-        value {
-          list {
-            shape {
-            }
-          }
-        }
-      }
-      attr {
-        key: "then_branch"
-        value {
-          func {
-            name: "wait_until_n_batches_for_bias_accumulated_true_700"
-          }
-        }
-      }
-    }
-    node_def {
-      name: "wait_until_n_batches_for_bias_accumulated/Identity"
-      op: "Identity"
-      input: "wait_until_n_batches_for_bias_accumulated:output:0"
-      attr {
-        key: "T"
-        value {
-          type: DT_BOOL
-        }
-      }
-      attr {
-        key: "_output_shapes"
-        value {
-          list {
-            shape {
-            }
-          }
-        }
-      }
-    }
-    ret {
-      key: "wait_until_n_batches_for_bias_accumulated_identity"
-      value: "wait_until_n_batches_for_bias_accumulated/Identity:output:0"
-    }
-    attr {
-      key: "_input_shapes"
-      value {
-        list {
-          shape {
-            dim {
-              size: -1
-            }
-            dim {
-              size: 1
-            }
-          }
-          shape {
-            dim {
-              size: -1
-            }
-            dim {
-              size: 1
-            }
-          }
-          shape {
-            unknown_rank: true
-          }
-          shape {
-          }
-          shape {
-            unknown_rank: true
-          }
-          shape {
-            unknown_rank: true
-          }
-          shape {
-            unknown_rank: true
-          }
-          shape {
-            unknown_rank: true
-          }
-          shape {
-            dim {
-              size: 7
-            }
-            dim {
-              size: 100
-            }
-            dim {
-              size: 2
-            }
-          }
-          shape {
-            dim {
-              size: 7
-            }
-            dim {
-              size: 100
-            }
-            dim {
-              size: 2
-            }
-          }
-          shape {
-            dim {
-              size: 7
-            }
-            dim {
-              size: 100
-            }
-            dim {
-              size: 2
-            }
-          }
-          shape {
-            dim {
-              size: 7
-            }
-            dim {
-              size: 100
-            }
-            dim {
-              size: 2
-            }
-          }
-          shape {
-            dim {
-              size: 7
-            }
-            dim {
-              size: 100
-            }
-            dim {
-              size: 2
-            }
-          }
-          shape {
-            dim {
-              size: 7
-            }
-            dim {
-              size: 100
-            }
-            dim {
-              size: 2
-            }
-          }
-          shape {
-            dim {
-              size: 7
-            }
-            dim {
-              size: 100
-            }
-            dim {
-              size: 2
-            }
-          }
-          shape {
-            dim {
-              size: 7
-            }
-            dim {
-              size: 100
-            }
-            dim {
-              size: 2
-            }
-          }
-          shape {
-            dim {
-              size: 7
-            }
-            dim {
-              size: 100
-            }
-            dim {
-              size: 2
-            }
-          }
-          shape {
-            dim {
-              size: 7
-            }
-            dim {
-              size: 100
-            }
-            dim {
-              size: 2
-            }
-          }
-          shape {
-            dim {
-              size: 7
-            }
-            dim {
-              size: 100
-            }
-            dim {
-              size: 2
-            }
-          }
-          shape {
-            dim {
-              size: 7
-            }
-            dim {
-              size: 100
-            }
-            dim {
-              size: 2
-            }
-          }
-          shape {
-            dim {
-              size: 7
-            }
-            dim {
-              size: 100
-            }
-            dim {
-              size: 2
-            }
-          }
-          shape {
-            dim {
-              size: 7
-            }
-            dim {
-              size: 100
-            }
-            dim {
-              size: 2
-            }
-          }
-          shape {
-            dim {
-              size: 7
-            }
-            dim {
-              size: 100
-            }
-            dim {
-              size: 2
-            }
-          }
-          shape {
-            dim {
-              size: 7
-            }
-            dim {
-              size: 100
-            }
-            dim {
-              size: 2
-            }
-          }
-          shape {
-            dim {
-              size: 7
-            }
-            dim {
-              size: 100
-            }
-            dim {
-              size: 2
-            }
-          }
-          shape {
-            dim {
-              size: 7
-            }
-            dim {
-              size: 100
-            }
-            dim {
-              size: 2
-            }
-          }
-          shape {
-            dim {
-              size: 7
-            }
-            dim {
-              size: 100
-            }
-            dim {
-              size: 2
-            }
-          }
-          shape {
-            dim {
-              size: 7
-            }
-            dim {
-              size: 100
-            }
-            dim {
-              size: 2
-            }
-          }
-          shape {
-            dim {
-              size: 7
-            }
-            dim {
-              size: 2
-            }
-            dim {
-              size: 2
-            }
-          }
-          shape {
-            dim {
-              size: 7
-            }
-            dim {
-              size: 2
-            }
-            dim {
-              size: 2
-            }
-          }
-          shape {
-            dim {
-              size: 7
-            }
-            dim {
-              size: 2
-            }
-            dim {
-              size: 2
-            }
-          }
-          shape {
-            dim {
-              size: 7
-            }
-            dim {
-              size: 2
-            }
-            dim {
-              size: 2
-            }
-          }
-          shape {
-            dim {
-              size: 7
-            }
-            dim {
-              size: 2
-            }
-            dim {
-              size: 2
-            }
-          }
-          shape {
-            dim {
-              size: 7
-            }
-            dim {
-              size: 2
-            }
-            dim {
-              size: 2
-            }
-          }
-          shape {
-            dim {
-              size: 7
-            }
-            dim {
-              size: 2
-            }
-            dim {
-              size: 2
-            }
-          }
-          shape {
-            dim {
-              size: 7
-            }
-            dim {
-              size: 2
-            }
-            dim {
-              size: 2
-            }
-          }
-          shape {
-            dim {
-              size: 2
-            }
-          }
-        }
-      }
-    }
-    arg_attr {
-      value {
-      }
-    }
-    arg_attr {
-      key: 1
-      value {
-      }
-    }
-    arg_attr {
-      key: 2
-      value {
-      }
-    }
-    arg_attr {
-      key: 3
-      value {
-      }
-    }
-    arg_attr {
-      key: 4
-      value {
-      }
-    }
-    arg_attr {
-      key: 5
-      value {
-      }
-    }
-    arg_attr {
-      key: 6
-      value {
-      }
-    }
-    arg_attr {
-      key: 7
-      value {
-      }
-    }
-    arg_attr {
-      key: 8
-      value {
-      }
-    }
-    arg_attr {
-      key: 9
-      value {
-      }
-    }
-    arg_attr {
-      key: 10
-      value {
-      }
-    }
-    arg_attr {
-      key: 11
-      value {
-      }
-    }
-    arg_attr {
-      key: 12
-      value {
-      }
-    }
-    arg_attr {
-      key: 13
-      value {
-      }
-    }
-    arg_attr {
-      key: 14
-      value {
-      }
-    }
-    arg_attr {
-      key: 15
-      value {
-      }
-    }
-    arg_attr {
-      key: 16
-      value {
-      }
-    }
-    arg_attr {
-      key: 17
-      value {
-      }
-    }
-    arg_attr {
-      key: 18
-      value {
-      }
-    }
-    arg_attr {
-      key: 19
-      value {
-      }
-    }
-    arg_attr {
-      key: 20
-      value {
-      }
-    }
-    arg_attr {
-      key: 21
-      value {
-      }
-    }
-    arg_attr {
-      key: 22
-      value {
-      }
-    }
-    arg_attr {
-      key: 23
-      value {
-      }
-    }
-    arg_attr {
-      key: 24
-      value {
-      }
-    }
-    arg_attr {
-      key: 25
-      value {
-      }
-    }
-    arg_attr {
-      key: 26
-      value {
-      }
-    }
-    arg_attr {
-      key: 27
-      value {
-      }
-    }
-    arg_attr {
-      key: 28
-      value {
-      }
-    }
-    arg_attr {
-      key: 29
-      value {
-      }
-    }
-    arg_attr {
-      key: 30
-      value {
-      }
-    }
-    arg_attr {
-      key: 31
-      value {
-      }
-    }
-    arg_attr {
-      key: 32
-      value {
-      }
-    }
-    arg_attr {
-      key: 33
-      value {
-      }
-    }
-    arg_attr {
-      key: 34
-      value {
-      }
-    }
-    arg_attr {
-      key: 35
-      value {
-      }
-    }
-    arg_attr {
-      key: 36
-      value {
-      }
-    }
-  }
-  function {
-    signature {
-      name: "cond_false_686"
-      input_arg {
-        name: "placeholder"
-        type: DT_FLOAT
-      }
-      input_arg {
-        name: "placeholder_1"
-        type: DT_FLOAT
-      }
-      input_arg {
-        name: "placeholder_2"
-        type: DT_RESOURCE
-      }
-      input_arg {
-        name: "resourceaccumulatorapplygradient_boosted_trees_stamp_token"
-        type: DT_INT64
-      }
-      input_arg {
-        name: "wait_until_n_batches_accumulated_boosted_trees"
-        type: DT_RESOURCE
-      }
-      input_arg {
-        name: "placeholder_3"
-        type: DT_RESOURCE
-      }
-      input_arg {
-        name: "resourceaccumulatorapplygradient_boosted_trees_conditional_accumulator"
-        type: DT_RESOURCE
-      }
-      input_arg {
-        name: "resourceaccumulatorapplygradient_1_boosted_trees_conditional_accumulator_1"
-        type: DT_RESOURCE
-      }
-      input_arg {
-        name: "stack_squeeze"
-        type: DT_FLOAT
-      }
-      input_arg {
-        name: "stack_squeeze_1"
-        type: DT_FLOAT
-      }
-      input_arg {
-        name: "stack_squeeze_2"
-        type: DT_FLOAT
-      }
-      input_arg {
-        name: "stack_squeeze_3"
-        type: DT_FLOAT
-      }
-      input_arg {
-        name: "stack_squeeze_4"
-        type: DT_FLOAT
-      }
-      input_arg {
-        name: "stack_squeeze_5"
-        type: DT_FLOAT
-      }
-      input_arg {
-        name: "stack_squeeze_6"
-        type: DT_FLOAT
-      }
-      input_arg {
-        name: "stack_squeeze_7"
-        type: DT_FLOAT
-      }
-      input_arg {
-        name: "stack_squeeze_8"
-        type: DT_FLOAT
-      }
-      input_arg {
-        name: "stack_squeeze_9"
-        type: DT_FLOAT
-      }
-      input_arg {
-        name: "stack_squeeze_10"
-        type: DT_FLOAT
-      }
-      input_arg {
-        name: "stack_squeeze_11"
-        type: DT_FLOAT
-      }
-      input_arg {
-        name: "stack_squeeze_12"
-        type: DT_FLOAT
-      }
-      input_arg {
-        name: "stack_squeeze_13"
-        type: DT_FLOAT
-      }
-      input_arg {
-        name: "stack_squeeze_14"
-        type: DT_FLOAT
-      }
-      input_arg {
-        name: "stack_squeeze_15"
-        type: DT_FLOAT
-      }
-      input_arg {
-        name: "stack_squeeze_16"
-        type: DT_FLOAT
-      }
-      input_arg {
-        name: "stack_squeeze_17"
-        type: DT_FLOAT
-      }
-      input_arg {
-        name: "stack_squeeze_18"
-        type: DT_FLOAT
-      }
-      input_arg {
-        name: "stack_squeeze_19"
-        type: DT_FLOAT
-      }
-      input_arg {
-        name: "stack_1_squeeze_20"
-        type: DT_FLOAT
-      }
-      input_arg {
-        name: "stack_1_squeeze_21"
-        type: DT_FLOAT
-      }
-      input_arg {
-        name: "stack_1_squeeze_22"
-        type: DT_FLOAT
-      }
-      input_arg {
-        name: "stack_1_squeeze_23"
-        type: DT_FLOAT
-      }
-      input_arg {
-        name: "stack_1_squeeze_24"
-        type: DT_FLOAT
-      }
-      input_arg {
-        name: "stack_1_squeeze_25"
-        type: DT_FLOAT
-      }
-      input_arg {
-        name: "stack_1_squeeze_26"
-        type: DT_FLOAT
-      }
-      input_arg {
-        name: "stack_1_squeeze_27"
-        type: DT_FLOAT
-      }
-      input_arg {
-        name: "wait_until_n_batches_accumulated_boosted_trees_last_layer_nodes_range"
-        type: DT_INT32
-      }
-      output_arg {
-        name: "wait_until_n_batches_accumulated_identity"
-        type: DT_BOOL
-      }
-      is_stateful: true
-    }
-    node_def {
-      name: "stack"
-      op: "Pack"
-      input: "stack_squeeze"
-      input: "stack_squeeze_1"
-      input: "stack_squeeze_2"
-      input: "stack_squeeze_3"
-      input: "stack_squeeze_4"
-      input: "stack_squeeze_5"
-      input: "stack_squeeze_6"
-      input: "stack_squeeze_7"
-      input: "stack_squeeze_8"
-      input: "stack_squeeze_9"
-      input: "stack_squeeze_10"
-      input: "stack_squeeze_11"
-      input: "stack_squeeze_12"
-      input: "stack_squeeze_13"
-      input: "stack_squeeze_14"
-      input: "stack_squeeze_15"
-      input: "stack_squeeze_16"
-      input: "stack_squeeze_17"
-      input: "stack_squeeze_18"
-      input: "stack_squeeze_19"
-      attr {
-        key: "N"
-        value {
-          i: 20
-        }
-      }
-      attr {
-        key: "T"
-        value {
-          type: DT_FLOAT
-        }
-      }
-      attr {
-        key: "_output_shapes"
-        value {
-          list {
-            shape {
-              dim {
-                size: 20
-              }
-              dim {
-                size: 7
-              }
-              dim {
-                size: 100
-              }
-              dim {
-                size: 2
-              }
-            }
-          }
-        }
-      }
-      attr {
-        key: "axis"
-        value {
-          i: 0
-        }
-      }
-    }
-    node_def {
-      name: "ResourceAccumulatorApplyGradient"
-      op: "ResourceAccumulatorApplyGradient"
-      input: "resourceaccumulatorapplygradient_boosted_trees_conditional_accumulator"
-      input: "resourceaccumulatorapplygradient_boosted_trees_stamp_token"
-      input: "stack:output:0"
-      attr {
-        key: "_output_shapes"
-        value {
-          list {
-          }
-        }
-      }
-      attr {
-        key: "dtype"
-        value {
-          type: DT_FLOAT
-        }
-      }
-    }
-    node_def {
-      name: "stack_1"
-      op: "Pack"
-      input: "stack_1_squeeze_20"
-      input: "stack_1_squeeze_21"
-      input: "stack_1_squeeze_22"
-      input: "stack_1_squeeze_23"
-      input: "stack_1_squeeze_24"
-      input: "stack_1_squeeze_25"
-      input: "stack_1_squeeze_26"
-      input: "stack_1_squeeze_27"
-      attr {
-        key: "N"
-        value {
-          i: 8
-        }
-      }
-      attr {
-        key: "T"
-        value {
-          type: DT_FLOAT
-        }
-      }
-      attr {
-        key: "_output_shapes"
-        value {
-          list {
-            shape {
-              dim {
-                size: 8
-              }
-              dim {
-                size: 7
-              }
-              dim {
-                size: 2
-              }
-              dim {
-                size: 2
-              }
-            }
-          }
-        }
-      }
-      attr {
-        key: "axis"
-        value {
-          i: 0
-        }
-      }
-    }
-    node_def {
-      name: "ResourceAccumulatorApplyGradient_1"
-      op: "ResourceAccumulatorApplyGradient"
-      input: "resourceaccumulatorapplygradient_1_boosted_trees_conditional_accumulator_1"
-      input: "resourceaccumulatorapplygradient_boosted_trees_stamp_token"
-      input: "stack_1:output:0"
-      attr {
-        key: "_output_shapes"
-        value {
-          list {
-          }
-        }
-      }
-      attr {
-        key: "dtype"
-        value {
-          type: DT_FLOAT
-        }
-      }
-    }
-    node_def {
-      name: "conditional_accumulator_NumAccumulated"
-      op: "ResourceAccumulatorNumAccumulated"
-      input: "resourceaccumulatorapplygradient_boosted_trees_conditional_accumulator"
-      input: "^ResourceAccumulatorApplyGradient"
-      input: "^ResourceAccumulatorApplyGradient_1"
-      attr {
-        key: "_output_shapes"
-        value {
-          list {
-            shape {
-            }
-          }
-        }
-      }
-    }
-    node_def {
-      name: "conditional_accumulator_1_NumAccumulated"
-      op: "ResourceAccumulatorNumAccumulated"
-      input: "resourceaccumulatorapplygradient_1_boosted_trees_conditional_accumulator_1"
-      input: "^ResourceAccumulatorApplyGradient"
-      input: "^ResourceAccumulatorApplyGradient_1"
-      attr {
-        key: "_output_shapes"
-        value {
-          list {
-            shape {
-            }
-          }
-        }
-      }
-    }
-    node_def {
-      name: "stack_2"
-      op: "Pack"
-      input: "conditional_accumulator_NumAccumulated:num_accumulated:0"
-      input: "conditional_accumulator_1_NumAccumulated:num_accumulated:0"
-      attr {
-        key: "N"
-        value {
-          i: 2
-        }
-      }
-      attr {
-        key: "T"
-        value {
-          type: DT_INT32
-        }
-      }
-      attr {
-        key: "_output_shapes"
-        value {
-          list {
-            shape {
-              dim {
-                size: 2
-              }
-            }
-          }
-        }
-      }
-      attr {
-        key: "axis"
-        value {
-          i: 0
-        }
-      }
-    }
-    node_def {
-      name: "Const"
-      op: "Const"
-      input: "^ResourceAccumulatorApplyGradient"
-      input: "^ResourceAccumulatorApplyGradient_1"
-      attr {
-        key: "_output_shapes"
-        value {
-          list {
-            shape {
-              dim {
-                size: 1
-              }
-            }
-          }
-        }
-      }
-      attr {
-        key: "dtype"
-        value {
-          type: DT_INT32
-        }
-      }
-      attr {
-        key: "value"
-        value {
-          tensor {
-            dtype: DT_INT32
-            tensor_shape {
-              dim {
-                size: 1
-              }
-            }
-            int_val: 0
-          }
-        }
-      }
-    }
-    node_def {
-      name: "Min"
-      op: "Min"
-      input: "stack_2:output:0"
-      input: "Const:output:0"
-      attr {
-        key: "T"
-        value {
-          type: DT_INT32
-        }
-      }
-      attr {
-        key: "Tidx"
-        value {
-          type: DT_INT32
-        }
-      }
-      attr {
-        key: "_output_shapes"
-        value {
-          list {
-            shape {
-            }
-          }
-        }
-      }
-      attr {
-        key: "keep_dims"
-        value {
-          b: false
-        }
-      }
-    }
-    node_def {
-      name: "GreaterEqual/y"
-      op: "Const"
-      input: "^ResourceAccumulatorApplyGradient"
-      input: "^ResourceAccumulatorApplyGradient_1"
-      attr {
-        key: "_output_shapes"
-        value {
-          list {
-            shape {
-            }
-          }
-        }
-      }
-      attr {
-        key: "dtype"
-        value {
-          type: DT_INT32
-        }
-      }
-      attr {
-        key: "value"
-        value {
-          tensor {
-            dtype: DT_INT32
-            tensor_shape {
-            }
-            int_val: 1
-          }
-        }
-      }
-    }
-    node_def {
-      name: "GreaterEqual"
-      op: "GreaterEqual"
-      input: "Min:output:0"
-      input: "GreaterEqual/y:output:0"
-      attr {
-        key: "T"
-        value {
-          type: DT_INT32
-        }
-      }
-      attr {
-        key: "_output_shapes"
-        value {
-          list {
-            shape {
-            }
-          }
-        }
-      }
-    }
-    node_def {
-      name: "wait_until_n_batches_accumulated"
-      op: "If"
-      input: "GreaterEqual:z:0"
-      input: "resourceaccumulatorapplygradient_boosted_trees_conditional_accumulator"
-      input: "resourceaccumulatorapplygradient_1_boosted_trees_conditional_accumulator_1"
-      input: "wait_until_n_batches_accumulated_boosted_trees_last_layer_nodes_range"
-      input: "wait_until_n_batches_accumulated_boosted_trees"
-      input: "GreaterEqual:z:0"
-      attr {
-        key: "Tcond"
-        value {
-          type: DT_BOOL
-        }
-      }
-      attr {
-        key: "Tin"
-        value {
-          list {
-            type: DT_RESOURCE
-            type: DT_RESOURCE
-            type: DT_INT32
-            type: DT_RESOURCE
-            type: DT_BOOL
-          }
-        }
-      }
-      attr {
-        key: "Tout"
-        value {
-          list {
-            type: DT_BOOL
-          }
-        }
-      }
-      attr {
-        key: "_lower_using_switch_merge"
-        value {
-          b: true
-        }
-      }
-      attr {
-        key: "_output_shapes"
-        value {
-          list {
-            shape {
-            }
-          }
-        }
-      }
-      attr {
-        key: "else_branch"
-        value {
-          func {
-            name: "wait_until_n_batches_accumulated_false_799"
-          }
-        }
-      }
-      attr {
-        key: "output_shapes"
-        value {
-          list {
-            shape {
-            }
-          }
-        }
-      }
-      attr {
-        key: "then_branch"
-        value {
-          func {
-            name: "wait_until_n_batches_accumulated_true_798"
-          }
-        }
-      }
-    }
-    node_def {
-      name: "wait_until_n_batches_accumulated/Identity"
-      op: "Identity"
-      input: "wait_until_n_batches_accumulated:output:0"
-      attr {
-        key: "T"
-        value {
-          type: DT_BOOL
-        }
-      }
-      attr {
-        key: "_output_shapes"
-        value {
-          list {
-            shape {
-            }
-          }
-        }
-      }
-    }
-    ret {
-      key: "wait_until_n_batches_accumulated_identity"
-      value: "wait_until_n_batches_accumulated/Identity:output:0"
-    }
-    attr {
-      key: "_input_shapes"
-      value {
-        list {
-          shape {
-            dim {
-              size: -1
-            }
-            dim {
-              size: 1
-            }
-          }
-          shape {
-            dim {
-              size: -1
-            }
-            dim {
-              size: 1
-            }
-          }
-          shape {
-            unknown_rank: true
-          }
-          shape {
-          }
-          shape {
-            unknown_rank: true
-          }
-          shape {
-            unknown_rank: true
-          }
-          shape {
-            unknown_rank: true
-          }
-          shape {
-            unknown_rank: true
-          }
-          shape {
-            dim {
-              size: 7
-            }
-            dim {
-              size: 100
-            }
-            dim {
-              size: 2
-            }
-          }
-          shape {
-            dim {
-              size: 7
-            }
-            dim {
-              size: 100
-            }
-            dim {
-              size: 2
-            }
-          }
-          shape {
-            dim {
-              size: 7
-            }
-            dim {
-              size: 100
-            }
-            dim {
-              size: 2
-            }
-          }
-          shape {
-            dim {
-              size: 7
-            }
-            dim {
-              size: 100
-            }
-            dim {
-              size: 2
-            }
-          }
-          shape {
-            dim {
-              size: 7
-            }
-            dim {
-              size: 100
-            }
-            dim {
-              size: 2
-            }
-          }
-          shape {
-            dim {
-              size: 7
-            }
-            dim {
-              size: 100
-            }
-            dim {
-              size: 2
-            }
-          }
-          shape {
-            dim {
-              size: 7
-            }
-            dim {
-              size: 100
-            }
-            dim {
-              size: 2
-            }
-          }
-          shape {
-            dim {
-              size: 7
-            }
-            dim {
-              size: 100
-            }
-            dim {
-              size: 2
-            }
-          }
-          shape {
-            dim {
-              size: 7
-            }
-            dim {
-              size: 100
-            }
-            dim {
-              size: 2
-            }
-          }
-          shape {
-            dim {
-              size: 7
-            }
-            dim {
-              size: 100
-            }
-            dim {
-              size: 2
-            }
-          }
-          shape {
-            dim {
-              size: 7
-            }
-            dim {
-              size: 100
-            }
-            dim {
-              size: 2
-            }
-          }
-          shape {
-            dim {
-              size: 7
-            }
-            dim {
-              size: 100
-            }
-            dim {
-              size: 2
-            }
-          }
-          shape {
-            dim {
-              size: 7
-            }
-            dim {
-              size: 100
-            }
-            dim {
-              size: 2
-            }
-          }
-          shape {
-            dim {
-              size: 7
-            }
-            dim {
-              size: 100
-            }
-            dim {
-              size: 2
-            }
-          }
-          shape {
-            dim {
-              size: 7
-            }
-            dim {
-              size: 100
-            }
-            dim {
-              size: 2
-            }
-          }
-          shape {
-            dim {
-              size: 7
-            }
-            dim {
-              size: 100
-            }
-            dim {
-              size: 2
-            }
-          }
-          shape {
-            dim {
-              size: 7
-            }
-            dim {
-              size: 100
-            }
-            dim {
-              size: 2
-            }
-          }
-          shape {
-            dim {
-              size: 7
-            }
-            dim {
-              size: 100
-            }
-            dim {
-              size: 2
-            }
-          }
-          shape {
-            dim {
-              size: 7
-            }
-            dim {
-              size: 100
-            }
-            dim {
-              size: 2
-            }
-          }
-          shape {
-            dim {
-              size: 7
-            }
-            dim {
-              size: 100
-            }
-            dim {
-              size: 2
-            }
-          }
-          shape {
-            dim {
-              size: 7
-            }
-            dim {
-              size: 2
-            }
-            dim {
-              size: 2
-            }
-          }
-          shape {
-            dim {
-              size: 7
-            }
-            dim {
-              size: 2
-            }
-            dim {
-              size: 2
-            }
-          }
-          shape {
-            dim {
-              size: 7
-            }
-            dim {
-              size: 2
-            }
-            dim {
-              size: 2
-            }
-          }
-          shape {
-            dim {
-              size: 7
-            }
-            dim {
-              size: 2
-            }
-            dim {
-              size: 2
-            }
-          }
-          shape {
-            dim {
-              size: 7
-            }
-            dim {
-              size: 2
-            }
-            dim {
-              size: 2
-            }
-          }
-          shape {
-            dim {
-              size: 7
-            }
-            dim {
-              size: 2
-            }
-            dim {
-              size: 2
-            }
-          }
-          shape {
-            dim {
-              size: 7
-            }
-            dim {
-              size: 2
-            }
-            dim {
-              size: 2
-            }
-          }
-          shape {
-            dim {
-              size: 7
-            }
-            dim {
-              size: 2
-            }
-            dim {
-              size: 2
-            }
-          }
-          shape {
-            dim {
-              size: 2
-            }
-          }
-        }
-      }
-    }
-    arg_attr {
-      value {
-      }
-    }
-    arg_attr {
-      key: 1
-      value {
-      }
-    }
-    arg_attr {
-      key: 2
-      value {
-      }
-    }
-    arg_attr {
-      key: 3
-      value {
-      }
-    }
-    arg_attr {
-      key: 4
-      value {
-      }
-    }
-    arg_attr {
-      key: 5
-      value {
-      }
-    }
-    arg_attr {
-      key: 6
-      value {
-      }
-    }
-    arg_attr {
-      key: 7
-      value {
-      }
-    }
-    arg_attr {
-      key: 8
-      value {
-      }
-    }
-    arg_attr {
-      key: 9
-      value {
-      }
-    }
-    arg_attr {
-      key: 10
-      value {
-      }
-    }
-    arg_attr {
-      key: 11
-      value {
-      }
-    }
-    arg_attr {
-      key: 12
-      value {
-      }
-    }
-    arg_attr {
-      key: 13
-      value {
-      }
-    }
-    arg_attr {
-      key: 14
-      value {
-      }
-    }
-    arg_attr {
-      key: 15
-      value {
-      }
-    }
-    arg_attr {
-      key: 16
-      value {
-      }
-    }
-    arg_attr {
-      key: 17
-      value {
-      }
-    }
-    arg_attr {
-      key: 18
-      value {
-      }
-    }
-    arg_attr {
-      key: 19
-      value {
-      }
-    }
-    arg_attr {
-      key: 20
-      value {
-      }
-    }
-    arg_attr {
-      key: 21
-      value {
-      }
-    }
-    arg_attr {
-      key: 22
-      value {
-      }
-    }
-    arg_attr {
-      key: 23
-      value {
-      }
-    }
-    arg_attr {
-      key: 24
-      value {
-      }
-    }
-    arg_attr {
-      key: 25
-      value {
-      }
-    }
-    arg_attr {
-      key: 26
-      value {
-      }
-    }
-    arg_attr {
-      key: 27
-      value {
-      }
-    }
-    arg_attr {
-      key: 28
-      value {
-      }
-    }
-    arg_attr {
-      key: 29
-      value {
-      }
-    }
-    arg_attr {
-      key: 30
-      value {
-      }
-    }
-    arg_attr {
-      key: 31
-      value {
-      }
-    }
-    arg_attr {
-      key: 32
-      value {
-      }
-    }
-    arg_attr {
-      key: 33
-      value {
-      }
-    }
-    arg_attr {
-      key: 34
-      value {
-      }
-    }
-    arg_attr {
-      key: 35
-      value {
-      }
-    }
-    arg_attr {
-      key: 36
-      value {
       }
     }
   }
@@ -29644,6 +27508,2144 @@ library {
     }
     arg_attr {
       key: 62
+      value {
+      }
+    }
+  }
+  function {
+    signature {
+      name: "cond_true_685"
+      input_arg {
+        name: "stack_mul"
+        type: DT_FLOAT
+      }
+      input_arg {
+        name: "stack_mul_2"
+        type: DT_FLOAT
+      }
+      input_arg {
+        name: "resourceaccumulatorapplygradient_boosted_trees_conditional_accumulator_2"
+        type: DT_RESOURCE
+      }
+      input_arg {
+        name: "resourceaccumulatorapplygradient_boosted_trees_stamp_token"
+        type: DT_INT64
+      }
+      input_arg {
+        name: "wait_until_n_batches_for_bias_accumulated_boosted_trees"
+        type: DT_RESOURCE
+      }
+      input_arg {
+        name: "wait_until_n_batches_for_bias_accumulated_boosted_trees_center_bias_needed"
+        type: DT_RESOURCE
+      }
+      input_arg {
+        name: "wait_until_n_batches_for_bias_accumulated_boosted_trees_conditional_accumulator"
+        type: DT_RESOURCE
+      }
+      input_arg {
+        name: "wait_until_n_batches_for_bias_accumulated_boosted_trees_conditional_accumulator_1"
+        type: DT_RESOURCE
+      }
+      input_arg {
+        name: "placeholder"
+        type: DT_FLOAT
+      }
+      input_arg {
+        name: "placeholder_1"
+        type: DT_FLOAT
+      }
+      input_arg {
+        name: "placeholder_2"
+        type: DT_FLOAT
+      }
+      input_arg {
+        name: "placeholder_3"
+        type: DT_FLOAT
+      }
+      input_arg {
+        name: "placeholder_4"
+        type: DT_FLOAT
+      }
+      input_arg {
+        name: "placeholder_5"
+        type: DT_FLOAT
+      }
+      input_arg {
+        name: "placeholder_6"
+        type: DT_FLOAT
+      }
+      input_arg {
+        name: "placeholder_7"
+        type: DT_FLOAT
+      }
+      input_arg {
+        name: "placeholder_8"
+        type: DT_FLOAT
+      }
+      input_arg {
+        name: "placeholder_9"
+        type: DT_FLOAT
+      }
+      input_arg {
+        name: "placeholder_10"
+        type: DT_FLOAT
+      }
+      input_arg {
+        name: "placeholder_11"
+        type: DT_FLOAT
+      }
+      input_arg {
+        name: "placeholder_12"
+        type: DT_FLOAT
+      }
+      input_arg {
+        name: "placeholder_13"
+        type: DT_FLOAT
+      }
+      input_arg {
+        name: "placeholder_14"
+        type: DT_FLOAT
+      }
+      input_arg {
+        name: "placeholder_15"
+        type: DT_FLOAT
+      }
+      input_arg {
+        name: "placeholder_16"
+        type: DT_FLOAT
+      }
+      input_arg {
+        name: "placeholder_17"
+        type: DT_FLOAT
+      }
+      input_arg {
+        name: "placeholder_18"
+        type: DT_FLOAT
+      }
+      input_arg {
+        name: "placeholder_19"
+        type: DT_FLOAT
+      }
+      input_arg {
+        name: "placeholder_20"
+        type: DT_FLOAT
+      }
+      input_arg {
+        name: "placeholder_21"
+        type: DT_FLOAT
+      }
+      input_arg {
+        name: "placeholder_22"
+        type: DT_FLOAT
+      }
+      input_arg {
+        name: "placeholder_23"
+        type: DT_FLOAT
+      }
+      input_arg {
+        name: "placeholder_24"
+        type: DT_FLOAT
+      }
+      input_arg {
+        name: "placeholder_25"
+        type: DT_FLOAT
+      }
+      input_arg {
+        name: "placeholder_26"
+        type: DT_FLOAT
+      }
+      input_arg {
+        name: "placeholder_27"
+        type: DT_FLOAT
+      }
+      input_arg {
+        name: "placeholder_28"
+        type: DT_INT32
+      }
+      output_arg {
+        name: "wait_until_n_batches_for_bias_accumulated_identity"
+        type: DT_BOOL
+      }
+      is_stateful: true
+    }
+    node_def {
+      name: "stack"
+      op: "Pack"
+      input: "stack_mul"
+      input: "stack_mul_2"
+      attr {
+        key: "N"
+        value {
+          i: 2
+        }
+      }
+      attr {
+        key: "T"
+        value {
+          type: DT_FLOAT
+        }
+      }
+      attr {
+        key: "_output_shapes"
+        value {
+          list {
+            shape {
+              dim {
+                size: 2
+              }
+              dim {
+                size: -1
+              }
+              dim {
+                size: 1
+              }
+            }
+          }
+        }
+      }
+      attr {
+        key: "axis"
+        value {
+          i: 0
+        }
+      }
+    }
+    node_def {
+      name: "Mean/reduction_indices"
+      op: "Const"
+      attr {
+        key: "_output_shapes"
+        value {
+          list {
+            shape {
+            }
+          }
+        }
+      }
+      attr {
+        key: "dtype"
+        value {
+          type: DT_INT32
+        }
+      }
+      attr {
+        key: "value"
+        value {
+          tensor {
+            dtype: DT_INT32
+            tensor_shape {
+            }
+            int_val: 1
+          }
+        }
+      }
+    }
+    node_def {
+      name: "Mean"
+      op: "Mean"
+      input: "stack:output:0"
+      input: "Mean/reduction_indices:output:0"
+      attr {
+        key: "T"
+        value {
+          type: DT_FLOAT
+        }
+      }
+      attr {
+        key: "Tidx"
+        value {
+          type: DT_INT32
+        }
+      }
+      attr {
+        key: "_output_shapes"
+        value {
+          list {
+            shape {
+              dim {
+                size: 2
+              }
+              dim {
+                size: 1
+              }
+            }
+          }
+        }
+      }
+      attr {
+        key: "keep_dims"
+        value {
+          b: false
+        }
+      }
+    }
+    node_def {
+      name: "ResourceAccumulatorApplyGradient"
+      op: "ResourceAccumulatorApplyGradient"
+      input: "resourceaccumulatorapplygradient_boosted_trees_conditional_accumulator_2"
+      input: "resourceaccumulatorapplygradient_boosted_trees_stamp_token"
+      input: "Mean:output:0"
+      attr {
+        key: "_output_shapes"
+        value {
+          list {
+          }
+        }
+      }
+      attr {
+        key: "dtype"
+        value {
+          type: DT_FLOAT
+        }
+      }
+    }
+    node_def {
+      name: "conditional_accumulator_2_NumAccumulated"
+      op: "ResourceAccumulatorNumAccumulated"
+      input: "resourceaccumulatorapplygradient_boosted_trees_conditional_accumulator_2"
+      input: "^ResourceAccumulatorApplyGradient"
+      attr {
+        key: "_output_shapes"
+        value {
+          list {
+            shape {
+            }
+          }
+        }
+      }
+    }
+    node_def {
+      name: "GreaterEqual/y"
+      op: "Const"
+      input: "^ResourceAccumulatorApplyGradient"
+      attr {
+        key: "_output_shapes"
+        value {
+          list {
+            shape {
+            }
+          }
+        }
+      }
+      attr {
+        key: "dtype"
+        value {
+          type: DT_INT32
+        }
+      }
+      attr {
+        key: "value"
+        value {
+          tensor {
+            dtype: DT_INT32
+            tensor_shape {
+            }
+            int_val: 1
+          }
+        }
+      }
+    }
+    node_def {
+      name: "GreaterEqual"
+      op: "GreaterEqual"
+      input: "conditional_accumulator_2_NumAccumulated:num_accumulated:0"
+      input: "GreaterEqual/y:output:0"
+      attr {
+        key: "T"
+        value {
+          type: DT_INT32
+        }
+      }
+      attr {
+        key: "_output_shapes"
+        value {
+          list {
+            shape {
+            }
+          }
+        }
+      }
+    }
+    node_def {
+      name: "wait_until_n_batches_for_bias_accumulated"
+      op: "If"
+      input: "GreaterEqual:z:0"
+      input: "resourceaccumulatorapplygradient_boosted_trees_conditional_accumulator_2"
+      input: "wait_until_n_batches_for_bias_accumulated_boosted_trees"
+      input: "wait_until_n_batches_for_bias_accumulated_boosted_trees_center_bias_needed"
+      input: "resourceaccumulatorapplygradient_boosted_trees_stamp_token"
+      input: "wait_until_n_batches_for_bias_accumulated_boosted_trees_conditional_accumulator"
+      input: "wait_until_n_batches_for_bias_accumulated_boosted_trees_conditional_accumulator_1"
+      input: "GreaterEqual:z:0"
+      attr {
+        key: "Tcond"
+        value {
+          type: DT_BOOL
+        }
+      }
+      attr {
+        key: "Tin"
+        value {
+          list {
+            type: DT_RESOURCE
+            type: DT_RESOURCE
+            type: DT_RESOURCE
+            type: DT_INT64
+            type: DT_RESOURCE
+            type: DT_RESOURCE
+            type: DT_BOOL
+          }
+        }
+      }
+      attr {
+        key: "Tout"
+        value {
+          list {
+            type: DT_BOOL
+          }
+        }
+      }
+      attr {
+        key: "_lower_using_switch_merge"
+        value {
+          b: true
+        }
+      }
+      attr {
+        key: "_output_shapes"
+        value {
+          list {
+            shape {
+            }
+          }
+        }
+      }
+      attr {
+        key: "else_branch"
+        value {
+          func {
+            name: "wait_until_n_batches_for_bias_accumulated_false_701"
+          }
+        }
+      }
+      attr {
+        key: "output_shapes"
+        value {
+          list {
+            shape {
+            }
+          }
+        }
+      }
+      attr {
+        key: "then_branch"
+        value {
+          func {
+            name: "wait_until_n_batches_for_bias_accumulated_true_700"
+          }
+        }
+      }
+    }
+    node_def {
+      name: "wait_until_n_batches_for_bias_accumulated/Identity"
+      op: "Identity"
+      input: "wait_until_n_batches_for_bias_accumulated:output:0"
+      attr {
+        key: "T"
+        value {
+          type: DT_BOOL
+        }
+      }
+      attr {
+        key: "_output_shapes"
+        value {
+          list {
+            shape {
+            }
+          }
+        }
+      }
+    }
+    ret {
+      key: "wait_until_n_batches_for_bias_accumulated_identity"
+      value: "wait_until_n_batches_for_bias_accumulated/Identity:output:0"
+    }
+    attr {
+      key: "_input_shapes"
+      value {
+        list {
+          shape {
+            dim {
+              size: -1
+            }
+            dim {
+              size: 1
+            }
+          }
+          shape {
+            dim {
+              size: -1
+            }
+            dim {
+              size: 1
+            }
+          }
+          shape {
+            unknown_rank: true
+          }
+          shape {
+          }
+          shape {
+            unknown_rank: true
+          }
+          shape {
+            unknown_rank: true
+          }
+          shape {
+            unknown_rank: true
+          }
+          shape {
+            unknown_rank: true
+          }
+          shape {
+            dim {
+              size: 7
+            }
+            dim {
+              size: 100
+            }
+            dim {
+              size: 2
+            }
+          }
+          shape {
+            dim {
+              size: 7
+            }
+            dim {
+              size: 100
+            }
+            dim {
+              size: 2
+            }
+          }
+          shape {
+            dim {
+              size: 7
+            }
+            dim {
+              size: 100
+            }
+            dim {
+              size: 2
+            }
+          }
+          shape {
+            dim {
+              size: 7
+            }
+            dim {
+              size: 100
+            }
+            dim {
+              size: 2
+            }
+          }
+          shape {
+            dim {
+              size: 7
+            }
+            dim {
+              size: 100
+            }
+            dim {
+              size: 2
+            }
+          }
+          shape {
+            dim {
+              size: 7
+            }
+            dim {
+              size: 100
+            }
+            dim {
+              size: 2
+            }
+          }
+          shape {
+            dim {
+              size: 7
+            }
+            dim {
+              size: 100
+            }
+            dim {
+              size: 2
+            }
+          }
+          shape {
+            dim {
+              size: 7
+            }
+            dim {
+              size: 100
+            }
+            dim {
+              size: 2
+            }
+          }
+          shape {
+            dim {
+              size: 7
+            }
+            dim {
+              size: 100
+            }
+            dim {
+              size: 2
+            }
+          }
+          shape {
+            dim {
+              size: 7
+            }
+            dim {
+              size: 100
+            }
+            dim {
+              size: 2
+            }
+          }
+          shape {
+            dim {
+              size: 7
+            }
+            dim {
+              size: 100
+            }
+            dim {
+              size: 2
+            }
+          }
+          shape {
+            dim {
+              size: 7
+            }
+            dim {
+              size: 100
+            }
+            dim {
+              size: 2
+            }
+          }
+          shape {
+            dim {
+              size: 7
+            }
+            dim {
+              size: 100
+            }
+            dim {
+              size: 2
+            }
+          }
+          shape {
+            dim {
+              size: 7
+            }
+            dim {
+              size: 100
+            }
+            dim {
+              size: 2
+            }
+          }
+          shape {
+            dim {
+              size: 7
+            }
+            dim {
+              size: 100
+            }
+            dim {
+              size: 2
+            }
+          }
+          shape {
+            dim {
+              size: 7
+            }
+            dim {
+              size: 100
+            }
+            dim {
+              size: 2
+            }
+          }
+          shape {
+            dim {
+              size: 7
+            }
+            dim {
+              size: 100
+            }
+            dim {
+              size: 2
+            }
+          }
+          shape {
+            dim {
+              size: 7
+            }
+            dim {
+              size: 100
+            }
+            dim {
+              size: 2
+            }
+          }
+          shape {
+            dim {
+              size: 7
+            }
+            dim {
+              size: 100
+            }
+            dim {
+              size: 2
+            }
+          }
+          shape {
+            dim {
+              size: 7
+            }
+            dim {
+              size: 100
+            }
+            dim {
+              size: 2
+            }
+          }
+          shape {
+            dim {
+              size: 7
+            }
+            dim {
+              size: 2
+            }
+            dim {
+              size: 2
+            }
+          }
+          shape {
+            dim {
+              size: 7
+            }
+            dim {
+              size: 2
+            }
+            dim {
+              size: 2
+            }
+          }
+          shape {
+            dim {
+              size: 7
+            }
+            dim {
+              size: 2
+            }
+            dim {
+              size: 2
+            }
+          }
+          shape {
+            dim {
+              size: 7
+            }
+            dim {
+              size: 2
+            }
+            dim {
+              size: 2
+            }
+          }
+          shape {
+            dim {
+              size: 7
+            }
+            dim {
+              size: 2
+            }
+            dim {
+              size: 2
+            }
+          }
+          shape {
+            dim {
+              size: 7
+            }
+            dim {
+              size: 2
+            }
+            dim {
+              size: 2
+            }
+          }
+          shape {
+            dim {
+              size: 7
+            }
+            dim {
+              size: 2
+            }
+            dim {
+              size: 2
+            }
+          }
+          shape {
+            dim {
+              size: 7
+            }
+            dim {
+              size: 2
+            }
+            dim {
+              size: 2
+            }
+          }
+          shape {
+            dim {
+              size: 2
+            }
+          }
+        }
+      }
+    }
+    arg_attr {
+      value {
+      }
+    }
+    arg_attr {
+      key: 1
+      value {
+      }
+    }
+    arg_attr {
+      key: 2
+      value {
+      }
+    }
+    arg_attr {
+      key: 3
+      value {
+      }
+    }
+    arg_attr {
+      key: 4
+      value {
+      }
+    }
+    arg_attr {
+      key: 5
+      value {
+      }
+    }
+    arg_attr {
+      key: 6
+      value {
+      }
+    }
+    arg_attr {
+      key: 7
+      value {
+      }
+    }
+    arg_attr {
+      key: 8
+      value {
+      }
+    }
+    arg_attr {
+      key: 9
+      value {
+      }
+    }
+    arg_attr {
+      key: 10
+      value {
+      }
+    }
+    arg_attr {
+      key: 11
+      value {
+      }
+    }
+    arg_attr {
+      key: 12
+      value {
+      }
+    }
+    arg_attr {
+      key: 13
+      value {
+      }
+    }
+    arg_attr {
+      key: 14
+      value {
+      }
+    }
+    arg_attr {
+      key: 15
+      value {
+      }
+    }
+    arg_attr {
+      key: 16
+      value {
+      }
+    }
+    arg_attr {
+      key: 17
+      value {
+      }
+    }
+    arg_attr {
+      key: 18
+      value {
+      }
+    }
+    arg_attr {
+      key: 19
+      value {
+      }
+    }
+    arg_attr {
+      key: 20
+      value {
+      }
+    }
+    arg_attr {
+      key: 21
+      value {
+      }
+    }
+    arg_attr {
+      key: 22
+      value {
+      }
+    }
+    arg_attr {
+      key: 23
+      value {
+      }
+    }
+    arg_attr {
+      key: 24
+      value {
+      }
+    }
+    arg_attr {
+      key: 25
+      value {
+      }
+    }
+    arg_attr {
+      key: 26
+      value {
+      }
+    }
+    arg_attr {
+      key: 27
+      value {
+      }
+    }
+    arg_attr {
+      key: 28
+      value {
+      }
+    }
+    arg_attr {
+      key: 29
+      value {
+      }
+    }
+    arg_attr {
+      key: 30
+      value {
+      }
+    }
+    arg_attr {
+      key: 31
+      value {
+      }
+    }
+    arg_attr {
+      key: 32
+      value {
+      }
+    }
+    arg_attr {
+      key: 33
+      value {
+      }
+    }
+    arg_attr {
+      key: 34
+      value {
+      }
+    }
+    arg_attr {
+      key: 35
+      value {
+      }
+    }
+    arg_attr {
+      key: 36
+      value {
+      }
+    }
+  }
+  function {
+    signature {
+      name: "cond_false_686"
+      input_arg {
+        name: "placeholder"
+        type: DT_FLOAT
+      }
+      input_arg {
+        name: "placeholder_1"
+        type: DT_FLOAT
+      }
+      input_arg {
+        name: "placeholder_2"
+        type: DT_RESOURCE
+      }
+      input_arg {
+        name: "resourceaccumulatorapplygradient_boosted_trees_stamp_token"
+        type: DT_INT64
+      }
+      input_arg {
+        name: "wait_until_n_batches_accumulated_boosted_trees"
+        type: DT_RESOURCE
+      }
+      input_arg {
+        name: "placeholder_3"
+        type: DT_RESOURCE
+      }
+      input_arg {
+        name: "resourceaccumulatorapplygradient_boosted_trees_conditional_accumulator"
+        type: DT_RESOURCE
+      }
+      input_arg {
+        name: "resourceaccumulatorapplygradient_1_boosted_trees_conditional_accumulator_1"
+        type: DT_RESOURCE
+      }
+      input_arg {
+        name: "stack_squeeze"
+        type: DT_FLOAT
+      }
+      input_arg {
+        name: "stack_squeeze_1"
+        type: DT_FLOAT
+      }
+      input_arg {
+        name: "stack_squeeze_2"
+        type: DT_FLOAT
+      }
+      input_arg {
+        name: "stack_squeeze_3"
+        type: DT_FLOAT
+      }
+      input_arg {
+        name: "stack_squeeze_4"
+        type: DT_FLOAT
+      }
+      input_arg {
+        name: "stack_squeeze_5"
+        type: DT_FLOAT
+      }
+      input_arg {
+        name: "stack_squeeze_6"
+        type: DT_FLOAT
+      }
+      input_arg {
+        name: "stack_squeeze_7"
+        type: DT_FLOAT
+      }
+      input_arg {
+        name: "stack_squeeze_8"
+        type: DT_FLOAT
+      }
+      input_arg {
+        name: "stack_squeeze_9"
+        type: DT_FLOAT
+      }
+      input_arg {
+        name: "stack_squeeze_10"
+        type: DT_FLOAT
+      }
+      input_arg {
+        name: "stack_squeeze_11"
+        type: DT_FLOAT
+      }
+      input_arg {
+        name: "stack_squeeze_12"
+        type: DT_FLOAT
+      }
+      input_arg {
+        name: "stack_squeeze_13"
+        type: DT_FLOAT
+      }
+      input_arg {
+        name: "stack_squeeze_14"
+        type: DT_FLOAT
+      }
+      input_arg {
+        name: "stack_squeeze_15"
+        type: DT_FLOAT
+      }
+      input_arg {
+        name: "stack_squeeze_16"
+        type: DT_FLOAT
+      }
+      input_arg {
+        name: "stack_squeeze_17"
+        type: DT_FLOAT
+      }
+      input_arg {
+        name: "stack_squeeze_18"
+        type: DT_FLOAT
+      }
+      input_arg {
+        name: "stack_squeeze_19"
+        type: DT_FLOAT
+      }
+      input_arg {
+        name: "stack_1_squeeze_20"
+        type: DT_FLOAT
+      }
+      input_arg {
+        name: "stack_1_squeeze_21"
+        type: DT_FLOAT
+      }
+      input_arg {
+        name: "stack_1_squeeze_22"
+        type: DT_FLOAT
+      }
+      input_arg {
+        name: "stack_1_squeeze_23"
+        type: DT_FLOAT
+      }
+      input_arg {
+        name: "stack_1_squeeze_24"
+        type: DT_FLOAT
+      }
+      input_arg {
+        name: "stack_1_squeeze_25"
+        type: DT_FLOAT
+      }
+      input_arg {
+        name: "stack_1_squeeze_26"
+        type: DT_FLOAT
+      }
+      input_arg {
+        name: "stack_1_squeeze_27"
+        type: DT_FLOAT
+      }
+      input_arg {
+        name: "wait_until_n_batches_accumulated_boosted_trees_last_layer_nodes_range"
+        type: DT_INT32
+      }
+      output_arg {
+        name: "wait_until_n_batches_accumulated_identity"
+        type: DT_BOOL
+      }
+      is_stateful: true
+    }
+    node_def {
+      name: "stack"
+      op: "Pack"
+      input: "stack_squeeze"
+      input: "stack_squeeze_1"
+      input: "stack_squeeze_2"
+      input: "stack_squeeze_3"
+      input: "stack_squeeze_4"
+      input: "stack_squeeze_5"
+      input: "stack_squeeze_6"
+      input: "stack_squeeze_7"
+      input: "stack_squeeze_8"
+      input: "stack_squeeze_9"
+      input: "stack_squeeze_10"
+      input: "stack_squeeze_11"
+      input: "stack_squeeze_12"
+      input: "stack_squeeze_13"
+      input: "stack_squeeze_14"
+      input: "stack_squeeze_15"
+      input: "stack_squeeze_16"
+      input: "stack_squeeze_17"
+      input: "stack_squeeze_18"
+      input: "stack_squeeze_19"
+      attr {
+        key: "N"
+        value {
+          i: 20
+        }
+      }
+      attr {
+        key: "T"
+        value {
+          type: DT_FLOAT
+        }
+      }
+      attr {
+        key: "_output_shapes"
+        value {
+          list {
+            shape {
+              dim {
+                size: 20
+              }
+              dim {
+                size: 7
+              }
+              dim {
+                size: 100
+              }
+              dim {
+                size: 2
+              }
+            }
+          }
+        }
+      }
+      attr {
+        key: "axis"
+        value {
+          i: 0
+        }
+      }
+    }
+    node_def {
+      name: "ResourceAccumulatorApplyGradient"
+      op: "ResourceAccumulatorApplyGradient"
+      input: "resourceaccumulatorapplygradient_boosted_trees_conditional_accumulator"
+      input: "resourceaccumulatorapplygradient_boosted_trees_stamp_token"
+      input: "stack:output:0"
+      attr {
+        key: "_output_shapes"
+        value {
+          list {
+          }
+        }
+      }
+      attr {
+        key: "dtype"
+        value {
+          type: DT_FLOAT
+        }
+      }
+    }
+    node_def {
+      name: "stack_1"
+      op: "Pack"
+      input: "stack_1_squeeze_20"
+      input: "stack_1_squeeze_21"
+      input: "stack_1_squeeze_22"
+      input: "stack_1_squeeze_23"
+      input: "stack_1_squeeze_24"
+      input: "stack_1_squeeze_25"
+      input: "stack_1_squeeze_26"
+      input: "stack_1_squeeze_27"
+      attr {
+        key: "N"
+        value {
+          i: 8
+        }
+      }
+      attr {
+        key: "T"
+        value {
+          type: DT_FLOAT
+        }
+      }
+      attr {
+        key: "_output_shapes"
+        value {
+          list {
+            shape {
+              dim {
+                size: 8
+              }
+              dim {
+                size: 7
+              }
+              dim {
+                size: 2
+              }
+              dim {
+                size: 2
+              }
+            }
+          }
+        }
+      }
+      attr {
+        key: "axis"
+        value {
+          i: 0
+        }
+      }
+    }
+    node_def {
+      name: "ResourceAccumulatorApplyGradient_1"
+      op: "ResourceAccumulatorApplyGradient"
+      input: "resourceaccumulatorapplygradient_1_boosted_trees_conditional_accumulator_1"
+      input: "resourceaccumulatorapplygradient_boosted_trees_stamp_token"
+      input: "stack_1:output:0"
+      attr {
+        key: "_output_shapes"
+        value {
+          list {
+          }
+        }
+      }
+      attr {
+        key: "dtype"
+        value {
+          type: DT_FLOAT
+        }
+      }
+    }
+    node_def {
+      name: "conditional_accumulator_NumAccumulated"
+      op: "ResourceAccumulatorNumAccumulated"
+      input: "resourceaccumulatorapplygradient_boosted_trees_conditional_accumulator"
+      input: "^ResourceAccumulatorApplyGradient"
+      input: "^ResourceAccumulatorApplyGradient_1"
+      attr {
+        key: "_output_shapes"
+        value {
+          list {
+            shape {
+            }
+          }
+        }
+      }
+    }
+    node_def {
+      name: "conditional_accumulator_1_NumAccumulated"
+      op: "ResourceAccumulatorNumAccumulated"
+      input: "resourceaccumulatorapplygradient_1_boosted_trees_conditional_accumulator_1"
+      input: "^ResourceAccumulatorApplyGradient"
+      input: "^ResourceAccumulatorApplyGradient_1"
+      attr {
+        key: "_output_shapes"
+        value {
+          list {
+            shape {
+            }
+          }
+        }
+      }
+    }
+    node_def {
+      name: "stack_2"
+      op: "Pack"
+      input: "conditional_accumulator_NumAccumulated:num_accumulated:0"
+      input: "conditional_accumulator_1_NumAccumulated:num_accumulated:0"
+      attr {
+        key: "N"
+        value {
+          i: 2
+        }
+      }
+      attr {
+        key: "T"
+        value {
+          type: DT_INT32
+        }
+      }
+      attr {
+        key: "_output_shapes"
+        value {
+          list {
+            shape {
+              dim {
+                size: 2
+              }
+            }
+          }
+        }
+      }
+      attr {
+        key: "axis"
+        value {
+          i: 0
+        }
+      }
+    }
+    node_def {
+      name: "Const"
+      op: "Const"
+      input: "^ResourceAccumulatorApplyGradient"
+      input: "^ResourceAccumulatorApplyGradient_1"
+      attr {
+        key: "_output_shapes"
+        value {
+          list {
+            shape {
+              dim {
+                size: 1
+              }
+            }
+          }
+        }
+      }
+      attr {
+        key: "dtype"
+        value {
+          type: DT_INT32
+        }
+      }
+      attr {
+        key: "value"
+        value {
+          tensor {
+            dtype: DT_INT32
+            tensor_shape {
+              dim {
+                size: 1
+              }
+            }
+            int_val: 0
+          }
+        }
+      }
+    }
+    node_def {
+      name: "Min"
+      op: "Min"
+      input: "stack_2:output:0"
+      input: "Const:output:0"
+      attr {
+        key: "T"
+        value {
+          type: DT_INT32
+        }
+      }
+      attr {
+        key: "Tidx"
+        value {
+          type: DT_INT32
+        }
+      }
+      attr {
+        key: "_output_shapes"
+        value {
+          list {
+            shape {
+            }
+          }
+        }
+      }
+      attr {
+        key: "keep_dims"
+        value {
+          b: false
+        }
+      }
+    }
+    node_def {
+      name: "GreaterEqual/y"
+      op: "Const"
+      input: "^ResourceAccumulatorApplyGradient"
+      input: "^ResourceAccumulatorApplyGradient_1"
+      attr {
+        key: "_output_shapes"
+        value {
+          list {
+            shape {
+            }
+          }
+        }
+      }
+      attr {
+        key: "dtype"
+        value {
+          type: DT_INT32
+        }
+      }
+      attr {
+        key: "value"
+        value {
+          tensor {
+            dtype: DT_INT32
+            tensor_shape {
+            }
+            int_val: 1
+          }
+        }
+      }
+    }
+    node_def {
+      name: "GreaterEqual"
+      op: "GreaterEqual"
+      input: "Min:output:0"
+      input: "GreaterEqual/y:output:0"
+      attr {
+        key: "T"
+        value {
+          type: DT_INT32
+        }
+      }
+      attr {
+        key: "_output_shapes"
+        value {
+          list {
+            shape {
+            }
+          }
+        }
+      }
+    }
+    node_def {
+      name: "wait_until_n_batches_accumulated"
+      op: "If"
+      input: "GreaterEqual:z:0"
+      input: "resourceaccumulatorapplygradient_boosted_trees_conditional_accumulator"
+      input: "resourceaccumulatorapplygradient_1_boosted_trees_conditional_accumulator_1"
+      input: "wait_until_n_batches_accumulated_boosted_trees_last_layer_nodes_range"
+      input: "wait_until_n_batches_accumulated_boosted_trees"
+      input: "GreaterEqual:z:0"
+      attr {
+        key: "Tcond"
+        value {
+          type: DT_BOOL
+        }
+      }
+      attr {
+        key: "Tin"
+        value {
+          list {
+            type: DT_RESOURCE
+            type: DT_RESOURCE
+            type: DT_INT32
+            type: DT_RESOURCE
+            type: DT_BOOL
+          }
+        }
+      }
+      attr {
+        key: "Tout"
+        value {
+          list {
+            type: DT_BOOL
+          }
+        }
+      }
+      attr {
+        key: "_lower_using_switch_merge"
+        value {
+          b: true
+        }
+      }
+      attr {
+        key: "_output_shapes"
+        value {
+          list {
+            shape {
+            }
+          }
+        }
+      }
+      attr {
+        key: "else_branch"
+        value {
+          func {
+            name: "wait_until_n_batches_accumulated_false_799"
+          }
+        }
+      }
+      attr {
+        key: "output_shapes"
+        value {
+          list {
+            shape {
+            }
+          }
+        }
+      }
+      attr {
+        key: "then_branch"
+        value {
+          func {
+            name: "wait_until_n_batches_accumulated_true_798"
+          }
+        }
+      }
+    }
+    node_def {
+      name: "wait_until_n_batches_accumulated/Identity"
+      op: "Identity"
+      input: "wait_until_n_batches_accumulated:output:0"
+      attr {
+        key: "T"
+        value {
+          type: DT_BOOL
+        }
+      }
+      attr {
+        key: "_output_shapes"
+        value {
+          list {
+            shape {
+            }
+          }
+        }
+      }
+    }
+    ret {
+      key: "wait_until_n_batches_accumulated_identity"
+      value: "wait_until_n_batches_accumulated/Identity:output:0"
+    }
+    attr {
+      key: "_input_shapes"
+      value {
+        list {
+          shape {
+            dim {
+              size: -1
+            }
+            dim {
+              size: 1
+            }
+          }
+          shape {
+            dim {
+              size: -1
+            }
+            dim {
+              size: 1
+            }
+          }
+          shape {
+            unknown_rank: true
+          }
+          shape {
+          }
+          shape {
+            unknown_rank: true
+          }
+          shape {
+            unknown_rank: true
+          }
+          shape {
+            unknown_rank: true
+          }
+          shape {
+            unknown_rank: true
+          }
+          shape {
+            dim {
+              size: 7
+            }
+            dim {
+              size: 100
+            }
+            dim {
+              size: 2
+            }
+          }
+          shape {
+            dim {
+              size: 7
+            }
+            dim {
+              size: 100
+            }
+            dim {
+              size: 2
+            }
+          }
+          shape {
+            dim {
+              size: 7
+            }
+            dim {
+              size: 100
+            }
+            dim {
+              size: 2
+            }
+          }
+          shape {
+            dim {
+              size: 7
+            }
+            dim {
+              size: 100
+            }
+            dim {
+              size: 2
+            }
+          }
+          shape {
+            dim {
+              size: 7
+            }
+            dim {
+              size: 100
+            }
+            dim {
+              size: 2
+            }
+          }
+          shape {
+            dim {
+              size: 7
+            }
+            dim {
+              size: 100
+            }
+            dim {
+              size: 2
+            }
+          }
+          shape {
+            dim {
+              size: 7
+            }
+            dim {
+              size: 100
+            }
+            dim {
+              size: 2
+            }
+          }
+          shape {
+            dim {
+              size: 7
+            }
+            dim {
+              size: 100
+            }
+            dim {
+              size: 2
+            }
+          }
+          shape {
+            dim {
+              size: 7
+            }
+            dim {
+              size: 100
+            }
+            dim {
+              size: 2
+            }
+          }
+          shape {
+            dim {
+              size: 7
+            }
+            dim {
+              size: 100
+            }
+            dim {
+              size: 2
+            }
+          }
+          shape {
+            dim {
+              size: 7
+            }
+            dim {
+              size: 100
+            }
+            dim {
+              size: 2
+            }
+          }
+          shape {
+            dim {
+              size: 7
+            }
+            dim {
+              size: 100
+            }
+            dim {
+              size: 2
+            }
+          }
+          shape {
+            dim {
+              size: 7
+            }
+            dim {
+              size: 100
+            }
+            dim {
+              size: 2
+            }
+          }
+          shape {
+            dim {
+              size: 7
+            }
+            dim {
+              size: 100
+            }
+            dim {
+              size: 2
+            }
+          }
+          shape {
+            dim {
+              size: 7
+            }
+            dim {
+              size: 100
+            }
+            dim {
+              size: 2
+            }
+          }
+          shape {
+            dim {
+              size: 7
+            }
+            dim {
+              size: 100
+            }
+            dim {
+              size: 2
+            }
+          }
+          shape {
+            dim {
+              size: 7
+            }
+            dim {
+              size: 100
+            }
+            dim {
+              size: 2
+            }
+          }
+          shape {
+            dim {
+              size: 7
+            }
+            dim {
+              size: 100
+            }
+            dim {
+              size: 2
+            }
+          }
+          shape {
+            dim {
+              size: 7
+            }
+            dim {
+              size: 100
+            }
+            dim {
+              size: 2
+            }
+          }
+          shape {
+            dim {
+              size: 7
+            }
+            dim {
+              size: 100
+            }
+            dim {
+              size: 2
+            }
+          }
+          shape {
+            dim {
+              size: 7
+            }
+            dim {
+              size: 2
+            }
+            dim {
+              size: 2
+            }
+          }
+          shape {
+            dim {
+              size: 7
+            }
+            dim {
+              size: 2
+            }
+            dim {
+              size: 2
+            }
+          }
+          shape {
+            dim {
+              size: 7
+            }
+            dim {
+              size: 2
+            }
+            dim {
+              size: 2
+            }
+          }
+          shape {
+            dim {
+              size: 7
+            }
+            dim {
+              size: 2
+            }
+            dim {
+              size: 2
+            }
+          }
+          shape {
+            dim {
+              size: 7
+            }
+            dim {
+              size: 2
+            }
+            dim {
+              size: 2
+            }
+          }
+          shape {
+            dim {
+              size: 7
+            }
+            dim {
+              size: 2
+            }
+            dim {
+              size: 2
+            }
+          }
+          shape {
+            dim {
+              size: 7
+            }
+            dim {
+              size: 2
+            }
+            dim {
+              size: 2
+            }
+          }
+          shape {
+            dim {
+              size: 7
+            }
+            dim {
+              size: 2
+            }
+            dim {
+              size: 2
+            }
+          }
+          shape {
+            dim {
+              size: 2
+            }
+          }
+        }
+      }
+    }
+    arg_attr {
+      value {
+      }
+    }
+    arg_attr {
+      key: 1
+      value {
+      }
+    }
+    arg_attr {
+      key: 2
+      value {
+      }
+    }
+    arg_attr {
+      key: 3
+      value {
+      }
+    }
+    arg_attr {
+      key: 4
+      value {
+      }
+    }
+    arg_attr {
+      key: 5
+      value {
+      }
+    }
+    arg_attr {
+      key: 6
+      value {
+      }
+    }
+    arg_attr {
+      key: 7
+      value {
+      }
+    }
+    arg_attr {
+      key: 8
+      value {
+      }
+    }
+    arg_attr {
+      key: 9
+      value {
+      }
+    }
+    arg_attr {
+      key: 10
+      value {
+      }
+    }
+    arg_attr {
+      key: 11
+      value {
+      }
+    }
+    arg_attr {
+      key: 12
+      value {
+      }
+    }
+    arg_attr {
+      key: 13
+      value {
+      }
+    }
+    arg_attr {
+      key: 14
+      value {
+      }
+    }
+    arg_attr {
+      key: 15
+      value {
+      }
+    }
+    arg_attr {
+      key: 16
+      value {
+      }
+    }
+    arg_attr {
+      key: 17
+      value {
+      }
+    }
+    arg_attr {
+      key: 18
+      value {
+      }
+    }
+    arg_attr {
+      key: 19
+      value {
+      }
+    }
+    arg_attr {
+      key: 20
+      value {
+      }
+    }
+    arg_attr {
+      key: 21
+      value {
+      }
+    }
+    arg_attr {
+      key: 22
+      value {
+      }
+    }
+    arg_attr {
+      key: 23
+      value {
+      }
+    }
+    arg_attr {
+      key: 24
+      value {
+      }
+    }
+    arg_attr {
+      key: 25
+      value {
+      }
+    }
+    arg_attr {
+      key: 26
+      value {
+      }
+    }
+    arg_attr {
+      key: 27
+      value {
+      }
+    }
+    arg_attr {
+      key: 28
+      value {
+      }
+    }
+    arg_attr {
+      key: 29
+      value {
+      }
+    }
+    arg_attr {
+      key: 30
+      value {
+      }
+    }
+    arg_attr {
+      key: 31
+      value {
+      }
+    }
+    arg_attr {
+      key: 32
+      value {
+      }
+    }
+    arg_attr {
+      key: 33
+      value {
+      }
+    }
+    arg_attr {
+      key: 34
+      value {
+      }
+    }
+    arg_attr {
+      key: 35
+      value {
+      }
+    }
+    arg_attr {
+      key: 36
       value {
       }
     }

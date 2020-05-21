@@ -3,7 +3,7 @@ trainingInput:
   hyperparameters:
     hyperparameterMetricTag: auc
     goal: MAXIMIZE
-    maxTrials: 20
+    maxTrials: 30
     maxParallelTrials: 5
     enableTrialEarlyStopping: True
     params:
@@ -17,12 +17,22 @@ trainingInput:
       minValue: 20
       maxValue: 80
       scaleType: UNIT_LINEAR_SCALE
+    - parameterName: max_depth
+      type: INTEGER
+      minValue: 3
+      maxValue: 10
+      scaleType: UNIT_LINEAR_SCALE
     - parameterName: l1_regularization
       type: DOUBLE
       minValue: 0.001
       maxValue: 0.1
       scaleType: UNIT_LOG_SCALE
     - parameterName: l2_regularization
+      type: DOUBLE
+      minValue: 0.001
+      maxValue: 0.1
+      scaleType: UNIT_LOG_SCALE
+    - parameterName: learning_rate
       type: DOUBLE
       minValue: 0.001
       maxValue: 0.1
