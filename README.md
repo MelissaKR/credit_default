@@ -1,4 +1,4 @@
-# credit_default
+# Credit Card Default Classification with Gradient Boosted Trees
 
 A gradient boosted trees classification model using TensorFlow is constructed to model and predict client credit card defaults, and is deployed on Google Cloud ML Engine. 
 
